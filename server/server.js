@@ -8,9 +8,6 @@ Meteor.startup(function(){
 	provideHMTAccess();
 });
 
-//Check if HMT logged in
-Accounts.onCreateUser(provideHMTAccess);
-
 //Provide HMT Access - Hardcoded for now
 function provideHMTAccess() {
 	var users = Meteor.users.find().fetch();

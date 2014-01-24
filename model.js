@@ -30,16 +30,23 @@ Meteor.methods({
 });
 
 /******************/
-/*      ITEMS     */
+/*      USERS     */
 /******************/
 
 Meteor.methods({
 	requestRSAccess: function() {
-    if (!Meteor.user())
-      throw new Meteor.Error(403, "You must be logged in");
-		
-		//Add request for user
+		//User requests RS access
 		var requestId = Meteor.users.update(this.userId, {$set: {requestRSAccess: true}});
 		return requestId;
+	},
+	grantRSAccess: function(user) {
+		//HMT grants RS access
+		var grantId = Meteor.users.update(user._id, {$unset: {requestRSAccess: true}, $set: {accessLevel: 1}});
+		return grantId;
+	},
+	rejectRSAccess: function(user) {
+		//HMT rejects RS access
+		var rejectId = Meteor.users.update(user._id, {$unset: {requestRSAccess: true}});
+		return rejectId;
 	}
 });

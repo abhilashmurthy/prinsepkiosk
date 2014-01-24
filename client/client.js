@@ -2,28 +2,24 @@
 
 Meteor.subscribe("prinsepusers");
 
-//////////////////////////////////// NAVBAR
+//////////////////////////////////////////////////////////////////////////////////////////////////////////// NAVBAR
 Template.navbar.events = {
 	'click .login-display-name': function(e) {
 		window.open(Meteor.user().services.facebook.link, '_blank');
 	}
 }
 
-/////////////////////////////////// PAGE
+/////////////////////////////////////////////////////////////////////////////////////////////////////////// PAGE
 Template.page.isHMT = function() {
 	return Meteor.user() && Meteor.user().accessLevel && Meteor.user().accessLevel === 2;
 }
 
-/////////////////////////////////// USERS
-Template.users.users = function() {
-	return Meteor.users.find({});
+Template.page.hasRequestedAccess = function() {
+	// return Template.page.isHMT || Meteor.user().requestRSAccess;
+	return Meteor.user().requestRSAccess;
 }
 
-Template.users.hasRequestedAccess = function() {
-	return Template.page.isHMT || Meteor.user().requestRSAccess;
-}
-
-Template.users.events = {
+Template.page.events = {
 	'click #requestRSBtn': function(e) {
 		Meteor.call('requestRSAccess', function(err, data){
 			if (err) console.log(err);
@@ -35,5 +31,23 @@ Template.users.events = {
 					$('#requestRSBtn').attr('disabled', 'disabled');
 				}
 			}, 500);
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////// USERS
+Template.users.users = function() {
+	return Meteor.users.find({});
+}
+
+Template.users.events = {
+	'click .approveBtn': function(e) {
+		Meteor.call('grantRSAccess', this, function(err, data){
+			if (err) console.log(err);
+		});
+	},
+	'click .rejectBtn': function(e) {
+		Meteor.call('rejectRSAccess', this, function(err, data){
+			if (err) console.log(err);
+		});
 	}
 }

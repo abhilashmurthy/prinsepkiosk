@@ -6,9 +6,9 @@
 	{{> navbar}}
 	{{#if currentUser}} <!-- Checks if the user has logged in -->
 		<h1 class="header">Prinsep Kiosk Duty</h1>
-	<div class="container">
-		{{> page}}
-	</div>
+		<div class="container">
+			{{> page}}
+		</div>
 	{{else}}
 		<h1 class="header">Please Log In</h1>
 	{{/if}}
@@ -28,6 +28,9 @@
 </template>
 
 <template name="page">
+	{{#unless hasRequestedAccess}} <!-- Disable request button if already requested -->
+		<button id="requestRSBtn" class="btn btn-success">Request RS Access</button>
+	{{/unless}}
 	{{#if isHMT}} <!-- Show users only if user is HMT -->
 		<h2>Users</h2>
 		{{> users}}
@@ -36,17 +39,20 @@
 
 <template name="users">
 	<div class="users">
-		{{#unless hasRequestedAccess}} <!-- Disable request button if already requested -->
-			<button id="requestRSBtn" class="btn btn-success">Request RS Access</button>
-		{{/unless}}
 		<table id="userTable" class="table table-bordered table-hover">
-			<tr><th>Name</th><th>ID</th><th>Profile</th><th>Request</th></tr>
+			<tr><th>Name</th><th>ID</th><th>Profile</th><th>Access Level</th><th>Request</th></tr>
 			{{#each users}}
 				<tr>
 					<td>{{services.facebook.name}}</td>
 					<td>{{services.facebook.id}}</td>
 					<td>{{services.facebook.link}}</td>
-					<td>{{requestRSAccess}}</td>
+					<td>{{accessLevel}}</td>
+					<td>
+						{{#if requestRSAccess}}
+							<button class="approveBtn btn btn-success">Approve RS Access</button>
+							<button class="rejectBtn btn btn-danger">Reject RS Access</button>
+						{{/if}}
+					</td>
 				</tr>
 			{{/each}}
 		</table>
