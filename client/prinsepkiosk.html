@@ -5,7 +5,7 @@
 <body>
 	{{> navbar}}
 	{{#if currentUser}} <!-- Checks if the user has logged in -->
-		<h1 class="header">Prinsep Kiosk Duty</h1>
+		<h1 class="header">Prinsep Kiosk Room</h1>
 		<div class="container">
 			{{> page}}
 		</div>
@@ -21,9 +21,9 @@
 				<a class="brand" href="#">Prinsep Kiosk Duty</a>
 				<div class="nav-collapse collapse navbar-inverse-collapse">
 					{{loginButtons align="right"}}
-				</div><!-- /.nav-collapse -->
+				</div>
 			</div>
-		</div><!-- /navbar-inner -->
+		</div>
 	</div>
 </template>
 
@@ -32,14 +32,15 @@
 		<button id="requestRSBtn" class="btn btn-success">Request RS Access</button>
 	{{/unless}}
 	{{#if isHMT}} <!-- Show users only if user is HMT -->
-		<h2>Users</h2>
 		{{> users}}
 	{{/if}}
+	{{> items}}
 </template>
 
 <template name="users">
+	<h2>Users</h2>
 	<div class="users">
-		<table id="userTable" class="table table-bordered table-hover">
+		<table id="userTable" class="abhitable table table-bordered table-hover">
 			<tr><th>Name</th><th>ID</th><th>Access Level</th><th>Request</th></tr>
 			{{#each users}}
 				<tr>
@@ -50,6 +51,36 @@
 						{{#if requestRSAccess}}
 							<button class="approveBtn btn btn-success">Approve RS Access</button>
 							<button class="rejectBtn btn btn-danger">Reject RS Access</button>
+						{{/if}}
+					</td>
+				</tr>
+			{{/each}}
+		</table>
+	</div>
+</template>
+
+<template name="items">
+	<h2>Items</h2>
+	{{#if isRS}}
+		<button class="createItemBtn btn btn-success">New Item</button>
+	{{/if}}
+	<div class="items">
+		<table id="itemTable" class="abhitable table table-bordered table-hover">
+			<tr><th>Name</th><th>Description</th><th>Available</th>{{#if isRS}}<th>Change</th>{{/if}}<th>Borrow</th></tr>
+			{{#each items}}
+				<tr>
+					<td>{{name}}</td>
+					<td>{{description}}</td>
+					<td>{{count}}</td>
+					{{#if isRS}}
+						<td>
+							<button class="updateItemBtn btn btn-success">Modify</button>
+							<button class="deleteItemBtn btn btn-success">Remove</button>
+						</td>
+					{{/if}}
+					<td>
+						{{#if available}}
+							<button class="borrowBtn btn btn-success">Borrow</button>
 						{{/if}}
 					</td>
 				</tr>

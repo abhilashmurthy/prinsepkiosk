@@ -1,7 +1,6 @@
 /******************/
 /*      ITEMS     */
 /******************/
-
 Items = new Meteor.Collection('items');
 
 var NonEmptyString = Match.Where(function (x) {
@@ -10,22 +9,25 @@ var NonEmptyString = Match.Where(function (x) {
 });
 
 Meteor.methods({
-	createItem: function(options) {
+	createItem: function(item) {
 		//Check syntax of item
-		check(options, {
+		check(item, {
 			name: NonEmptyString,
+			id: Number,
+			type: String,
 			description: NonEmptyString,
-			price: Number
+			price: Number,
+			available: Boolean
 		});
-    if (options.name.length > 100)
-      throw new Meteor.Error(413, "Name too long");
-    if (options.description.length > 1000)
-      throw new Meteor.Error(413, "Description too long");
-    if (!Meteor.user())
-      throw new Meteor.Error(403, "You must be logged in");
+		if (item.name.length > 100)
+		  throw new Meteor.Error(413, "Name too long");
+		if (item.description.length > 1000)
+		  throw new Meteor.Error(413, "Description too long");
+		if (!Meteor.user())
+		  throw new Meteor.Error(403, "You must be logged in");
 		
 		//Add to DB
-		return Items.insert(options);
+		return Items.insert(item);
 	}
 });
 
