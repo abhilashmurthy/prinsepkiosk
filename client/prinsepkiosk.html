@@ -1,0 +1,54 @@
+<head>
+	<title>Prinsep Kiosk Equipment Borrow</title>
+</head>
+
+<body>
+	{{> navbar}}
+	{{#if currentUser}} <!-- Checks if the user has logged in -->
+		<h1 class="header">Prinsep Kiosk Duty</h1>
+	<div class="container">
+		{{> page}}
+	</div>
+	{{else}}
+		<h1 class="header">Please Log In</h1>
+	{{/if}}
+</body>
+
+<template name="navbar">
+	<div class="navbar navbar-inverse">
+		<div class="container navbar-inner">
+			<div class="container">
+				<a class="brand" href="#">Prinsep Kiosk Duty</a>
+				<div class="nav-collapse collapse navbar-inverse-collapse">
+					{{loginButtons align="right"}}
+				</div><!-- /.nav-collapse -->
+			</div>
+		</div><!-- /navbar-inner -->
+	</div>
+</template>
+
+<template name="page">
+	{{#if isHMT}} <!-- Show users only if user is HMT -->
+		<h2>Users</h2>
+		{{> users}}
+	{{/if}}
+</template>
+
+<template name="users">
+	<div class="users">
+		{{#unless hasRequestedAccess}} <!-- Disable request button if already requested -->
+			<button id="requestRSBtn" class="btn btn-success">Request RS Access</button>
+		{{/unless}}
+		<table id="userTable" class="table table-bordered table-hover">
+			<tr><th>Name</th><th>ID</th><th>Profile</th><th>Request</th></tr>
+			{{#each users}}
+				<tr>
+					<td>{{services.facebook.name}}</td>
+					<td>{{services.facebook.id}}</td>
+					<td>{{services.facebook.link}}</td>
+					<td>{{requestRSAccess}}</td>
+				</tr>
+			{{/each}}
+		</table>
+	</div>
+</template>
