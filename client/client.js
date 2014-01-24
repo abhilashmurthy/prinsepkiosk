@@ -11,12 +11,11 @@ Template.navbar.events = {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////// PAGE
 Template.page.isHMT = function() {
-	return Meteor.user() && Meteor.user().accessLevel && Meteor.user().accessLevel === 2;
+	return Meteor.user().accessLevel && Meteor.user().accessLevel === 2;
 }
 
 Template.page.hasRequestedAccess = function() {
-	// return Template.page.isHMT || Meteor.user().requestRSAccess;
-	return Meteor.user().requestRSAccess;
+	return Meteor.user().accessLevel || Meteor.user().requestRSAccess; //Don't show request access button when accessLevel > 0 or when user has already requested access
 }
 
 Template.page.events = {

@@ -40,12 +40,11 @@
 <template name="users">
 	<div class="users">
 		<table id="userTable" class="table table-bordered table-hover">
-			<tr><th>Name</th><th>ID</th><th>Profile</th><th>Access Level</th><th>Request</th></tr>
+			<tr><th>Name</th><th>ID</th><th>Access Level</th><th>Request</th></tr>
 			{{#each users}}
 				<tr>
-					<td>{{services.facebook.name}}</td>
+					<td><a href="{{services.facebook.link}}">{{services.facebook.name}}</a></td>
 					<td>{{services.facebook.id}}</td>
-					<td>{{services.facebook.link}}</td>
 					<td>{{accessLevel}}</td>
 					<td>
 						{{#if requestRSAccess}}
