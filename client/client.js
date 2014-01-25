@@ -67,7 +67,23 @@ Template.items.events = {
 			{label: '', type: 'button', values:['success', 'OK']} //first value in array is button type, next is button text
 		];
 		var $table = createInputTable(fields);
-		$(e.target).after($table);
+		bootbox.dialog(
+		  Spark.render(Template.test),
+			[{
+			  "label" : "Ok",
+			  "class" : "btn-primary",
+			   "callback": function() {}
+			},{
+			  "label" : "Cancel",
+			  "class" : "btn",
+			  "callback": function() {}
+			}],
+			{
+			  "header":"Some Dialog box",
+			  "headerCloseButton":true,
+			  "onEscape": function() {}
+			}
+		);
 	},
 	'click .updateItemBtn': function(e) {
 		//Bootbox update item
