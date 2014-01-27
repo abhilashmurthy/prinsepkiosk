@@ -1,6 +1,7 @@
 {
   "packages": {
     "bootboxjs": {},
-	"font-awesome": {}
+	"font-awesome": {},
+	"pnotify": {}
   }
 }

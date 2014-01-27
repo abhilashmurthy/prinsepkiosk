@@ -1,5 +1,6 @@
-//Contains self written functions for use
+/* AUTHOR: ABHILASH */
 
+//Converts forms to json objects directly
 $.fn.serializeObject = function()
 {
     var o = {};
@@ -17,6 +18,7 @@ $.fn.serializeObject = function()
     return o;
 };
 
+//Creates input tables
 function createInputTable(fields) {
 	//fields in arrays of {label:name, type:input type, values:array of values}
 	return $(document.createElement('table'))

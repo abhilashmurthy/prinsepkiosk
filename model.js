@@ -53,9 +53,10 @@ Meteor.methods({
 		if (_.findWhere(item.requests, {_id: me._id})) return false;
 		if (_.findWhere(item.borrowers, {_id: me._id})) return false;
 		Items.update(item._id, {$push: {requests: me}});
+		return true;
 	},
 	giveItem: function(request) {
-		//TODO: RS cannot give to himself
+		if (request.user._id === this.userId) return false; //RS cannot give to self
 		Items.update(request.item._id, 
 			{
 				$pull: {requests: request.user}, //Remove user from requests
@@ -64,6 +65,7 @@ Meteor.methods({
 				$set: {available: --request.item.count === 0 ? false : true} //Change availability of item
 			}
 		);
+		return true;
 	},
 	rejectItem: function(request) {
 		Items.update(request.item._id, {$pull: {requests: request.user}});

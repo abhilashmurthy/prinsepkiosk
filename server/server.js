@@ -16,14 +16,12 @@ Meteor.startup(function(){
 //Provide HMT Access - Hardcoded for now
 function provideHMTAccess() {
 	var users = Meteor.users.find().fetch();
-	//[Abhilash]
-	var hmtIds = ['524305752'];
+	//[Abhilash, Ian, Shira, Neth, Cho, Melanie, Prof Tim]
+	var HMT_FACEBOOK_IDS = ['524305752', '538477023', '515189471', '1030504678', '1065980324', '761305117', '524231821'];
 	for (var i = 0; i < users.length; i++) {
-		for (var j = 0; j < hmtIds.length; j++) {
-			if (hmtIds[j] === users[i].services.facebook.id) {
-				Meteor.users.update(users[i]._id, {$set: {accessLevel: 2}});
-				break;
-			}
+		if (_.findWhere(HMT_FACEBOOK_IDS, users[i].services.facebook.id)) {
+			console.log('Giving ' + users[i].services.facebook.name + ' HMT access');
+			Meteor.users.update(users[i]._id, {$set: {accessLevel: 2}});
 		}
 	}
 }

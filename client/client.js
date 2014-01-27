@@ -78,12 +78,20 @@ Template.items.events = {
 		Meteor.call('incrItem', this);
 	},
 	'click .borrowBtn': function(e) {
-		Meteor.call('borrowItem', this);
+		Meteor.call('borrowItem', this, function(err, response){
+			if (err) console.log(err);
+			Session.set('borrowable', response);
+		});
+		setTimeout(function(){if (!Session.get('borrowable')) notify('Cannot', 'You cannot borrow the same thing twice');}, 500);
 	},
 	'click .giveBtn': function(e) {
 		var itemId = $(e.currentTarget).closest('tr').attr('id');
 		var item = Items.findOne(itemId);
-		Meteor.call('giveItem', {item:item, user:this});
+		Meteor.call('giveItem', {item:item, user:this}, function(err, response){
+			if (err) console.log(err);
+			Session.set('giveable', response);
+		});
+		setTimeout(function(){if (!Session.get('giveable')) notify('Cannot', 'You give the item to yourself, genius');}, 500);
 	},
 	'click .rejectBtn': function(e) {
 		var itemId = $(e.currentTarget).closest('tr').attr('id');
@@ -95,4 +103,27 @@ Template.items.events = {
 		var item = Items.findOne(itemId);
 		Meteor.call('collectItem', {item:item, user:this});
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////// PLUGINS
+//Pnotify settings
+$.pnotify.defaults.history = false;
+$.pnotify.defaults.delay = 3000;
+function notify(title, message) {
+	$.pnotify({
+		title: title,
+		text: message,
+		type: "warning",
+		icon: false,
+		sticker: false,
+		mouse_reset: false,
+		animation: "fade",
+		animate_speed: "fast",
+		before_open: function(pnotify) {
+			pnotify.css({
+			  top: "52px",
+			  left: ($(window).width() / 2) - (pnotify.width() / 2)
+			});
+		}
+	});
 }
