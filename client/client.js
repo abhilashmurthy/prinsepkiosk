@@ -52,11 +52,7 @@ Template.users.events = {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////// ITEMS
 Template.items.items = function() {
-	var items = Items.find().fetch();
-	for (var i = 0; i < items.length; i++) {
-		if (_.contains(items[i].requests, Meteor.user())) items[i].available = false;
-	}
-	return items;
+	return Items.find({});
 }
 
 Template.items.isRS = function() {

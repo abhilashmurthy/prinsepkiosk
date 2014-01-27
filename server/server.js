@@ -20,7 +20,11 @@ function provideHMTAccess() {
 	//[Abhilash]
 	var hmtIds = ['524305752'];
 	for (var i = 0; i < users.length; i++) {
-		if (hmtIds.indexOf(users[i].services.facebook.id) > -1) 
-			Meteor.users.update(users[i]._id, {$set: {accessLevel: 2}});
+		for (var j = 0; j < hmtIds.length; j++) {
+			if (hmtIds[j] === users[i].services.facebook.id) {
+				Meteor.users.update(users[i]._id, {$set: {accessLevel: 2}});
+				break;
+			}
+		}
 	}
 }

@@ -18,6 +18,7 @@
 
 .abhitable {
 	margin-top: 20px;
+	vertical-align: middle;
 }
 
 .header {
@@ -34,4 +35,9 @@
 
 .request {
 	margin-bottom: 10px;
+}
+
+.deleteItemBtn {
+	margin-top: 5px;
+	margin-left: 5px;
 }

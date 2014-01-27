@@ -66,13 +66,13 @@
 	{{/if}}
 	<div class="items">
 		<table id="itemTable" class="abhitable table table-bordered table-hover">
-			<tr><th>Name</th><th>Description</th><th>Count</th>{{#if isRS}}{{/if}}<th>Status</th><th>Borrow</th></tr>
+			<tr><th>Name</th><th>Description</th><th>Available</th>{{#if isRS}}{{/if}}<th>Status</th><th>Borrow</th></tr>
 			{{#each items}}
 				<tr>
 					<td>
 						{{name}}
 						{{#if isRS}}
-							<br/><button title="Remove" class="deleteItemBtn btn btn-danger"><i class="fa fa-trash-o fa-white"></i></button>
+							<button title="Remove" class="deleteItemBtn pull-right btn btn-danger"><i class="fa fa-trash-o fa-white"></i></button>
 						{{/if}}
 					</td>
 					<td>{{description}}</td>
@@ -82,11 +82,15 @@
 						Available
 						{{#each requests}}
 							<div class="request">
-								<i class="muted">Requested by </i>
-								<br/><a href="{{this.services.facebook.link}}" target="_blank">
-									<img src="http://graph.facebook.com/{{this.services.facebook.id}}/picture" title="{{this.services.facebook.name}}"/>
+								<i class="muted" style="text-align: center">Requested by </i>
+								<div>
+									<a href="{{this.services.facebook.link}}" target="_blank">
+										<img src="http://graph.facebook.com/{{this.services.facebook.id}}/picture" title="{{this.services.facebook.name}}"/>
+									</a>
+								</div>
+								<div>
 									{{this.services.facebook.name}}
-								</a>
+								</div>
 							</div>
 						{{/each}}
 					{{else}}
