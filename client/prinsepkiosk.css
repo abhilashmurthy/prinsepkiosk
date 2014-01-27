@@ -23,3 +23,7 @@
 .header {
 	text-align: center;
 }
+
+.formtable td {
+	padding-right: 10px;
+}

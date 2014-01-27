@@ -1,4 +1,5 @@
 Meteor.subscribe("prinsepusers");
+Meteor.subscribe("items");
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////// NAVBAR
 Template.navbar.events = {
@@ -50,160 +51,34 @@ Template.users.events = {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////// ITEMS
+Template.items.items = function() {
+	var items = Items.find().fetch();
+	for (var i = 0; i < items.length; i++) {
+		if (_.contains(items[i].requests, Meteor.user())) items[i].available = false;
+	}
+	return items;
+}
+
 Template.items.isRS = function() {
 	return Meteor.user().accessLevel && Meteor.user().accessLevel > 0;
 }
 
 Template.items.events = {
 	'click .createItemBtn': function(e) {
-		//Bootbox create item
-		var fields = [
-			{label: 'name', type: 'text'},
-			{label: 'id', type: 'text'},
-			{label: 'type', type: 'select', values:['Electronic', 'Sport', 'Board']},
-			{label: 'description', type: 'text'},
-			{label: 'price', type: 'text'},
-			{label: 'available', type: 'radio', values:['Yes', 'No']},
-			{label: '', type: 'button', values:['success', 'OK']} //first value in array is button type, next is button text
-		];
-		var $table = createInputTable(fields);
-		bootbox.dialog(
-		  Spark.render(Template.test),
-			[{
-			  "label" : "Ok",
-			  "class" : "btn-primary",
-			   "callback": function() {}
-			},{
-			  "label" : "Cancel",
-			  "class" : "btn",
-			  "callback": function() {}
-			}],
-			{
-			  "header":"Some Dialog box",
-			  "headerCloseButton":true,
-			  "onEscape": function() {}
+		bootbox.confirm({
+			message: Spark.render(Template.additem),
+			title: "Add Item",
+			callback: function(confirm) {
+				if (!confirm) return;
+				var item = $('#addform').serializeObject();
+				Meteor.call('createItem', item);
 			}
-		);
-	},
-	'click .updateItemBtn': function(e) {
-		//Bootbox update item
+		});
 	},
 	'click .deleteItemBtn': function(e) {
-		//Delete item
-	}
-}
-
-function createInputTable(fields) {
-	//fields in arrays of {label:name, type:input type, values:array of values}
-	return $(document.createElement('table'))
-			.addClass('table table-bordered table-hover')
-			.addClass('abhitable')
-			.append(function(){
-				var $trArray = new Array();
-				for (var i = 0; i < fields.length; i++) {
-					$trArray.push(
-						$(document.createElement('tr'))
-							.append($(document.createElement('td'))
-										.html("<b>" + (capsLetters(fields[i].label)) + "</b>"))							
-							.append($(document.createElement('td'))
-										.append(function() {
-											switch (fields[i].type){
-												case 'text':
-													return $(document.createElement('input'))
-														.attr('type', 'text')
-														.attr('name', fields[i].label)
-														.attr('id', fields[i].label)
-														.addClass('createItemInput');
-												case 'password':
-													return $(document.createElement('input'))
-														.attr('type', 'password')
-														.attr('name', fields[i].label)
-														.attr('id', fields[i].label)
-														.addClass('createItemInput');
-												case 'checkbox':
-													var $returnArray = new Array();
-													for (var j = 0; j < fields[i].values.length; j++) {
-														$returnArray.push(
-															$(document.createElement('input'))
-																.attr('type', 'checkbox')
-																.attr('name', fields[i].label)
-																.attr('value', fields[i].values[j])
-																.addClass('createItemInput')
-														);
-														$returnArray.push(fields[i].values[j] + '<br/>');
-													}
-													return $returnArray;
-												case 'radio':
-													var $returnArray = new Array();
-													for (var j = 0; j < fields[i].values.length; j++) {
-														$returnArray.push(
-															$(document.createElement('input'))
-																.attr('type', 'radio')
-																.attr('name', fields[i].label)
-																.attr('value', fields[i].values[j])
-																.addClass('createItemInput')
-														);
-														$returnArray.push(fields[i].values[j] + '<br/>');
-													}
-													return $returnArray;
-												case 'select':
-													return $(document.createElement('select'))
-														.attr('id', fields[i].label)
-														.attr('name', fields[i].label)
-														.addClass('createItemInput')
-														.append(function(){
-															var $optionArray = new Array();
-															for (var j = 0; j < fields[i].values.length; j++) {
-																$optionArray.push(
-																	$(document.createElement('option'))
-																		.attr('value', fields[i].values[j].replace(' ', ''))
-																		.html(fields[i].values[j])
-																);
-															}
-															return $optionArray;
-														});
-												case 'multiselect':
-													return $(document.createElement('select'))
-														.attr('id', fields[i].label)
-														.attr('name', fields[i].label)
-														.addClass('createItemInput')
-														.attr('multiple' , 'multiple')
-														.append(function(){
-															var $optionArray = new Array();
-															for (var j = 0; j < fields[i].values.length; j++) {
-																$optionArray.push(
-																	$(document.createElement('option'))
-																		.attr('value', fields[i].values[j].replace(' ', ''))
-																		.html(fields[i].values[j])
-																);
-															}
-															return $optionArray;
-														});
-												case 'button':
-													return $(document.createElement('button'))
-														.attr('id', fields[i].label)
-														.attr('name', fields[i].label)
-														.addClass('createItemInput')
-														.addClass('btn btn-' + fields[i].values[0])
-														.html(fields[i].values[1]);
-											}
-										})
-									)
-					)
-				}
-				return $trArray;
-			});
-}
-
-function capsLetters(string) {
-	var words = string.split(" ");
-	if (words.length > 1) {
-		var newString = "";
-		for (var i = 0; i < words.length; i++) {
-			newString += words[i].charAt(0) + words[i].slice(1) + " ";
-		}
-		return newString.trim();
-	} else {
-		return string.charAt(0).toUpperCase() + string.slice(1);
+		Meteor.call('deleteItem', this);
+	},
+	'click .borrowBtn': function(e) {
+		Meteor.call('borrowItem', this);
 	}
 }

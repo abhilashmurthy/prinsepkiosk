@@ -3,8 +3,14 @@ Meteor.publish("prinsepusers", function () {
   return Meteor.users.find({});
 });
 
+//Publish all items
+Meteor.publish("items", function() {
+	return Items.find({});
+});
+
 //Runs functions on startup
 Meteor.startup(function(){
+	Items.remove({});
 	provideHMTAccess();
 });
 

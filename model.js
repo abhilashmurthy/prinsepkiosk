@@ -8,16 +8,19 @@ var NonEmptyString = Match.Where(function (x) {
   return x.length !== 0;
 });
 
+var ConvertedNumber = Match.Where(function (x) {
+	check(x, String);
+	return parseInt(x) !== NaN;
+});
+
 Meteor.methods({
 	createItem: function(item) {
 		//Check syntax of item
 		check(item, {
 			name: NonEmptyString,
-			id: Number,
 			type: String,
-			description: NonEmptyString,
-			price: Number,
-			available: Boolean
+			description: Match.Optional(String),
+			price: Match.Optional(ConvertedNumber)
 		});
 		if (item.name.length > 100)
 		  throw new Meteor.Error(413, "Name too long");
@@ -26,10 +29,28 @@ Meteor.methods({
 		if (!Meteor.user())
 		  throw new Meteor.Error(403, "You must be logged in");
 		
-		//Add to DB
-		return Items.insert(item);
+		//Default parameters
+		item.count = 1;
+		item.available = true;
+		item.requests = [];
+		
+		//Check if item already exists
+		console.log('Inserting item: ' + JSON.stringify(item));
+		var storedItem = Items.findOne({name: item.name});
+		if (storedItem) Items.update(storedItem._id, {$inc: {count: 1}});
+		else Items.insert(item);
+	},
+	deleteItem: function(item) {
+		if (item.count > 1) Items.update(item._id, {$inc: {count: -1}});
+		else Items.remove(item._id);
+	},
+	borrowItem: function(item) {
+		var me = Meteor.users.findOne(this.userId);
+		Items.update(item._id, {$pull: {requests: me}}); //Remove me and readd me - Shortcut
+		Items.update(item._id, {$push: {requests: me}});
 	}
 });
+
 
 /******************/
 /*      USERS     */

@@ -66,25 +66,56 @@
 	{{/if}}
 	<div class="items">
 		<table id="itemTable" class="abhitable table table-bordered table-hover">
-			<tr><th>Name</th><th>Description</th><th>Available</th>{{#if isRS}}<th>Change</th>{{/if}}<th>Borrow</th></tr>
+			<tr><th>Name</th><th>Description</th><th>Count</th>{{#if isRS}}<th>Change</th>{{/if}}<th>Borrow</th></tr>
 			{{#each items}}
 				<tr>
 					<td>{{name}}</td>
 					<td>{{description}}</td>
 					<td>{{count}}</td>
 					{{#if isRS}}
-						<td>
-							<button class="updateItemBtn btn btn-success">Modify</button>
-							<button class="deleteItemBtn btn btn-success">Remove</button>
-						</td>
+						<td><button title="Remove" class="deleteItemBtn btn btn-danger"><i class="fa fa-trash-o fa-white"></i></button></td>
 					{{/if}}
 					<td>
 						{{#if available}}
 							<button class="borrowBtn btn btn-success">Borrow</button>
+						{{else}}
+							<i class="muted">Unavailable</i>
 						{{/if}}
+						{{#each requests}}
+							<br/><i class="muted">Requested by </i>
+							<a href="{{this.services.facebook.link}}" target="_blank">
+								<img src="http://graph.facebook.com/{{this.services.facebook.id}}/picture" title="{{this.services.facebook.name}}"/>
+							</a>
+						{{/each}}
 					</td>
 				</tr>
 			{{/each}}
 		</table>
+	</div>
+</template>
+
+<!-- Modals Only -->
+<template name="additem">
+	<div class="additem">
+		<form id="addform">
+			<table class="formtable">
+				<tr>
+					<td>Name</td>
+					<td>
+						<input type="text" name="name"/>
+					</td>
+				</tr>
+				<tr><td>Type</td><td>
+					<select name="type">
+						<option value="electronic">Electronic</option>
+						<option value="sport">Sport</option>
+						<option value="board">Board</option>
+						<option value="event">Event</option>
+					</select>
+				</td></tr>
+				<tr><td>Description</td><td><input type="text" name="description"/></td></tr>
+				<tr><td>Price</td><td><input type="text" name="price"/></td></tr>
+			</table>
+		</form>
 	</div>
 </template>
