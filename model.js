@@ -44,6 +44,9 @@ Meteor.methods({
 		if (item.count > 1) Items.update(item._id, {$inc: {count: -1}});
 		else Items.remove(item._id);
 	},
+	incrItem: function(item) {
+		Items.update(item._id, {$inc: {count: 1}});
+	},
 	borrowItem: function(item) {
 		var me = Meteor.users.findOne(this.userId);
 		Items.update(item._id, {$pull: {requests: me}}); //Remove me and readd me - Shortcut

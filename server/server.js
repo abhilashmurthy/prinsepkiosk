@@ -10,7 +10,6 @@ Meteor.publish("items", function() {
 
 //Runs functions on startup
 Meteor.startup(function(){
-	Items.remove({});
 	provideHMTAccess();
 });
 

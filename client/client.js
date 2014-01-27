@@ -74,6 +74,9 @@ Template.items.events = {
 	'click .deleteItemBtn': function(e) {
 		Meteor.call('deleteItem', this);
 	},
+	'click .incrementItemBtn': function(e) {
+		Meteor.call('incrItem', this);
+	},
 	'click .borrowBtn': function(e) {
 		Meteor.call('borrowItem', this);
 	}
