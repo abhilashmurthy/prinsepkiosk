@@ -68,19 +68,19 @@
 		<table id="itemTable" class="abhitable table table-bordered table-hover">
 			<tr><th>Name</th><th>Description</th><th>Available</th>{{#if isRS}}{{/if}}<th>Status</th><th>Borrow</th></tr>
 			{{#each items}}
-				<tr>
+				<tr id="{{_id}}">
 					<td>
 						{{name}}
 						{{#if isRS}}
-							<button title="Remove" class="deleteItemBtn iconBtn pull-right btn btn-danger"><i class="fa fa-trash-o fa-white"></i></button>
-							<button title="Add One" class="incrementItemBtn iconBtn pull-right btn btn-info"><i class="fa fa-plus fa-white"></i></button>
+							<button title="Remove One" class="deleteItemBtn actionBtn pull-right btn btn-danger"><i class="fa fa-minus fa-white"></i></button>
+							<button title="Add One" class="incrementItemBtn actionBtn pull-right btn btn-info"><i class="fa fa-plus fa-white"></i></button>
 						{{/if}}
 					</td>
 					<td>{{description}}</td>
 					<td>{{count}}</td>
 					<td>
 					{{#if available}}
-						Available
+						<u>Available</u>
 						{{#each requests}}
 							<div class="request">
 								<i class="muted" style="text-align: center">Requested by </i>
@@ -88,18 +88,40 @@
 									<a href="{{this.services.facebook.link}}" target="_blank">
 										<img src="http://graph.facebook.com/{{this.services.facebook.id}}/picture" title="{{this.services.facebook.name}}"/>
 									</a>
-								</div>
-								<div>
 									{{this.services.facebook.name}}
 								</div>
+								{{#if isRS}}
+									<div>
+										<button title="Give" class="giveBtn actionBtn btn btn-success">Give</button>
+										<button title="Reject" class="rejectBtn actionBtn btn btn-danger">Reject</button>
+									</div>
+								{{/if}}
+								<hr>
 							</div>
 						{{/each}}
 					{{else}}
-						<i class="muted">Unavailable</i>
+						<u class="muted">Unavailable</u>
 					{{/if}}
+					{{#each borrowers}}
+						<div class="borrower">
+							<i class="muted" style="text-align: center">Being used by </i>
+							<div>
+								<a href="{{this.services.facebook.link}}" target="_blank">
+									<img src="http://graph.facebook.com/{{this.services.facebook.id}}/picture" title="{{this.services.facebook.name}}"/>
+								</a>
+								{{this.services.facebook.name}}
+							</div>
+							{{#if isRS}}
+								<div>
+									<button title="Collect" class="collectBtn actionBtn btn btn-primary">Collect</button>
+								</div>
+							{{/if}}
+							<hr>
+						</div>
+					{{/each}}
 					</td>
 					<td>
-						<button class="{{#if available}}borrowBtn{{/if}} btn btn-success">Borrow</button>
+						<button class="{{#if available}}borrowBtn{{/if}} actionBtn btn btn-success">Borrow</button>
 					</td>
 				</tr>
 			{{/each}}

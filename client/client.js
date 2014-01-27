@@ -79,5 +79,20 @@ Template.items.events = {
 	},
 	'click .borrowBtn': function(e) {
 		Meteor.call('borrowItem', this);
+	},
+	'click .giveBtn': function(e) {
+		var itemId = $(e.currentTarget).closest('tr').attr('id');
+		var item = Items.findOne(itemId);
+		Meteor.call('giveItem', {item:item, user:this});
+	},
+	'click .rejectBtn': function(e) {
+		var itemId = $(e.currentTarget).closest('tr').attr('id');
+		var item = Items.findOne(itemId);
+		Meteor.call('rejectItem', {item:item, user:this});
+	},
+	'click .collectBtn': function(e) {
+		var itemId = $(e.currentTarget).closest('tr').attr('id');
+		var item = Items.findOne(itemId);
+		Meteor.call('collectItem', {item:item, user:this});
 	}
 }

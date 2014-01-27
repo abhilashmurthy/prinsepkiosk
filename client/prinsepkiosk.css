@@ -33,11 +33,10 @@
 	margin-bottom: 20px;
 }
 
-.request {
-	margin-bottom: 10px;
+.request, .borrower {
+	margin-bottom: 15px;
 }
 
-.iconBtn {
-	margin-top: 5px;
-	margin-left: 5px;
+.actionBtn {
+	margin: 5px 5px 5px 0;
 }

@@ -33,6 +33,7 @@ Meteor.methods({
 		item.count = 1;
 		item.available = true;
 		item.requests = [];
+		item.borrowers = [];
 		
 		//Check if item already exists
 		console.log('Inserting item: ' + JSON.stringify(item));
@@ -45,12 +46,36 @@ Meteor.methods({
 		else Items.remove(item._id);
 	},
 	incrItem: function(item) {
-		Items.update(item._id, {$inc: {count: 1}});
+		Items.update(item._id, {$inc: {count: 1}, $set: {available: true}});
 	},
 	borrowItem: function(item) {
 		var me = Meteor.users.findOne(this.userId);
-		Items.update(item._id, {$pull: {requests: me}}); //Remove me and readd me - Shortcut
+		if (_.findWhere(item.requests, {_id: me._id})) return false;
+		if (_.findWhere(item.borrowers, {_id: me._id})) return false;
 		Items.update(item._id, {$push: {requests: me}});
+	},
+	giveItem: function(request) {
+		//TODO: RS cannot give to himself
+		Items.update(request.item._id, 
+			{
+				$pull: {requests: request.user}, //Remove user from requests
+				$push: {borrowers: request.user}, //Add user to borrowers
+				$inc: {count: -1}, //Decrement count
+				$set: {available: --request.item.count === 0 ? false : true} //Change availability of item
+			}
+		);
+	},
+	rejectItem: function(request) {
+		Items.update(request.item._id, {$pull: {requests: request.user}});
+	},
+	collectItem: function(collect) {
+		Items.update(collect.item._id, 
+			{
+				$pull: {borrowers: collect.user}, //Remove user from borrowers
+				$inc: {count: 1}, //Increment counnt
+				$set: {available: true} //Change availability of item
+			}
+		);
 	}
 });
 
