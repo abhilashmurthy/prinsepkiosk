@@ -45,7 +45,9 @@ Meteor.methods({
 		Items.remove(item._id);
 	},
 	decrItem: function(item) {
+		if (--item.count === 0) return false;
 		Items.update(item._id, {$inc: {count: -1}, $set: {available: --item.count - item.borrowers.length === 0 ? false : true}});
+		return true;
 	},
 	incrItem: function(item) {
 		Items.update(item._id, {$inc: {count: 1}, $set: {available: true}});
@@ -64,7 +66,7 @@ Meteor.methods({
 				$pull: {requests: request.user}, //Remove user from requests
 				$push: {borrowers: request.user}, //Add user to borrowers
 				$inc: {count: -1}, //Decrement count
-				$set: {available: --request.item.count === 0 ? false : true} //Change availability of item
+				$set: {available: --request.item.count === 0 ? false : true} //New count + number of borrowers = available
 			}
 		);
 		return true;

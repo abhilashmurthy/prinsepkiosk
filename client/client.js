@@ -75,7 +75,11 @@ Template.items.events = {
 		Meteor.call('deleteItem', this);
 	},
 	'click .decrementItemBtn': function(e) {
-		Meteor.call('decrItem', this);
+		Meteor.call('decrItem', this, function(err, response){
+			if (err) console.log(err);
+			Session.set('decrementable', response);
+		});
+		setTimeout(function(){if (!Session.get('decrementable')) notify('Cannot', 'Cannot have 0 items');}, 500);
 	},
 	'click .incrementItemBtn': function(e) {
 		Meteor.call('incrItem', this);
