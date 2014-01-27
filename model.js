@@ -42,8 +42,10 @@ Meteor.methods({
 		else Items.insert(item);
 	},
 	deleteItem: function(item) {
-		if (item.count > 1) Items.update(item._id, {$inc: {count: -1}});
-		else Items.remove(item._id);
+		Items.remove(item._id);
+	},
+	decrItem: function(item) {
+		Items.update(item._id, {$inc: {count: -1}, $set: {available: --item.count - item.borrowers.length === 0 ? false : true}});
 	},
 	incrItem: function(item) {
 		Items.update(item._id, {$inc: {count: 1}, $set: {available: true}});

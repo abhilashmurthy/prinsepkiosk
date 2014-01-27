@@ -28,7 +28,7 @@
 
 <template name="page">
 	{{#unless hasRequestedAccess}} <!-- Disable request button if already requested -->
-		<button id="requestRSBtn" class="btn btn-success">Request RS Access</button>
+		<button id="requestRSBtn" class="pull-right btn btn-success">Request RS Access</button>
 	{{/unless}}
 	{{#if isHMT}} <!-- Show users only if user is HMT -->
 		{{> users}}
@@ -70,7 +70,8 @@
 					<td>
 						{{name}}
 						{{#if isRS}}
-							<button title="Remove One" class="deleteItemBtn actionBtn pull-right btn btn-danger"><i class="fa fa-minus fa-white"></i></button>
+							<button title="Delete" class="deleteItemBtn actionBtn pull-right btn btn-danger"><i class="fa fa-trash-o fa-white"></i></button>
+							<button title="Remove One" class="decrementItemBtn actionBtn pull-right btn btn-info"><i class="fa fa-minus fa-white"></i></button>
 							<button title="Add One" class="incrementItemBtn actionBtn pull-right btn btn-info"><i class="fa fa-plus fa-white"></i></button>
 						{{/if}}
 					</td>
@@ -102,7 +103,7 @@
 					{{/if}}
 					{{#each borrowers}}
 						<div class="borrower">
-							<i class="muted" style="text-align: center">Being used by </i>
+							<i style="text-align: center; color: blue">Being used by </i>
 							<div>
 								<a href="{{this.services.facebook.link}}" target="_blank">
 									<img src="http://graph.facebook.com/{{this.services.facebook.id}}/picture" title="{{this.services.facebook.name}}"/>
@@ -119,7 +120,7 @@
 					{{/each}}
 					</td>
 					<td>
-						<button class="{{#if available}}borrowBtn{{/if}} actionBtn btn btn-success">Borrow</button>
+						{{#if available}}<button class="{{#if available}}borrowBtn{{/if}} actionBtn btn btn-success">Borrow</button>{{/if}}
 					</td>
 				</tr>
 			{{/each}}
