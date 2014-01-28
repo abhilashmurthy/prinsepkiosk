@@ -43,7 +43,7 @@ Meteor.methods({
 		
 		//Create story
 		Meteor.call('createStory', {
-			time: Date.now(),
+			time: moment().format('MMM DD YY, h:mm a'),
 			subject: Meteor.user(),
 			action: 'Added an item',
 			object: {item: item}
@@ -54,7 +54,7 @@ Meteor.methods({
 		
 		//Create story
 		Meteor.call('createStory', {
-			time: Date.now(),
+			time: moment().format('MMM DD YY, h:mm a'),
 			subject: Meteor.user(),
 			action: 'Removed an item',
 			object: {item: item}
@@ -66,7 +66,7 @@ Meteor.methods({
 		
 		//Create story
 		Meteor.call('createStory', {
-			time: Date.now(),
+			time: moment().format('MMM DD YY, h:mm a'),
 			subject: Meteor.user(),
 			action: 'Decreased an item',
 			object: {item: item}
@@ -79,7 +79,7 @@ Meteor.methods({
 		
 		//Create story
 		Meteor.call('createStory', {
-			time: Date.now(),
+			time: moment().format('MMM DD YY, h:mm a'),
 			subject: Meteor.user(),
 			action: 'Increased an item',
 			object: {item: item}
@@ -93,7 +93,7 @@ Meteor.methods({
 		
 		//Create story
 		Meteor.call('createStory', {
-			time: Date.now(),
+			time: moment().format('MMM DD YY, h:mm a'),
 			subject: me,
 			action: 'Requested an item',
 			object: {item: item}
@@ -114,7 +114,7 @@ Meteor.methods({
 		
 		//Create story
 		Meteor.call('createStory', {
-			time: Date.now(),
+			time: moment().format('MMM DD YY, h:mm a'),
 			subject: Meteor.user(),
 			action: 'Gave an item to',
 			object: {user: request.user, item: request.item}
@@ -127,7 +127,7 @@ Meteor.methods({
 		
 		//Create story
 		Meteor.call('createStory', {
-			time: Date.now(),
+			time: moment().format('MMM DD YY, h:mm a'),
 			subject: Meteor.user(),
 			action: 'Rejected an item to',
 			object: {user: request.user, item: request.item}
@@ -144,7 +144,7 @@ Meteor.methods({
 		
 		//Create story
 		Meteor.call('createStory', {
-			time: Date.now(),
+			time: moment().format('MMM DD YY, h:mm a'),
 			subject: Meteor.user(),
 			action: 'Collected an item from',
 			object: {user: collect.user, item: collect.item}
