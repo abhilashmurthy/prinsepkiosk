@@ -2,7 +2,6 @@
   "packages": {
     "bootboxjs": {},
     "font-awesome": {},
-    "pnotify": {},
-    "router": {}
+    "pnotify": {}
   }
 }
