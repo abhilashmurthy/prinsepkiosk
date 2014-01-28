@@ -21,9 +21,12 @@
 	vertical-align: middle;
 }
 
-.abhitable tr, .abhitable td {
-	background-color: white !important;
+.abhitable td {
 	vertical-align: middle;
+}
+
+.dataTable tr, .dataTable td {
+	background-color: white !important;
 }
 
 .abhitable:not(#storyTable) td:not(.status), .abhitable:not(#storyTable) th:not(.status) {
@@ -31,7 +34,7 @@
 }
 
 .highlight {
-	font-size: 16px;
+	font-size: 18px;
 	font-weight: bold;
 }
 
