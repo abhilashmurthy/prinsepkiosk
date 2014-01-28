@@ -29,6 +29,10 @@
 	padding-right: 10px;
 }
 
+.formtable td:first-child {
+	padding-bottom: 10px;
+}
+
 .borrowBtn {
 	margin-bottom: 20px;
 }
@@ -39,4 +43,8 @@
 
 .actionBtn {
 	margin: 5px 5px 5px 0;
+}
+
+.itemModal {
+	max-width: 350px;
 }

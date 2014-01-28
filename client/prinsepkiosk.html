@@ -47,8 +47,12 @@
 					<td>{{accessLevel}}</td>
 					<td>
 						{{#if requestRSAccess}}
-							<button class="approveBtn btn btn-success">Approve RS Access</button>
-							<button class="rejectBtn btn btn-danger">Reject RS Access</button>
+							<button class="approveBtn btn btn-success">Grant</button>
+							<button class="rejectBtn btn btn-danger">Reject</button>
+						{{else}}
+							{{#if accessLevel}}
+								<button class="revokeBtn btn" style="color: red">Revoke</button>
+							{{/if}}
 						{{/if}}
 					</td>
 				</tr>

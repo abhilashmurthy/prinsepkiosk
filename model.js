@@ -46,7 +46,7 @@ Meteor.methods({
 	},
 	decrItem: function(item) {
 		if (--item.count === 0) return false;
-		Items.update(item._id, {$inc: {count: -1}, $set: {available: --item.count - item.borrowers.length === 0 ? false : true}});
+		Items.update(item._id, {$inc: {count: -1}});
 		return true;
 	},
 	incrItem: function(item) {
@@ -92,18 +92,17 @@ Meteor.methods({
 
 Meteor.methods({
 	requestRSAccess: function() {
-		//User requests RS access
-		var requestId = Meteor.users.update(this.userId, {$set: {requestRSAccess: true}});
-		return requestId;
+		Meteor.users.update(this.userId, {$set: {requestRSAccess: true}});
 	},
 	grantRSAccess: function(user) {
-		//HMT grants RS access
-		var grantId = Meteor.users.update(user._id, {$unset: {requestRSAccess: true}, $set: {accessLevel: 1}});
-		return grantId;
+		Meteor.users.update(user._id, {$unset: {requestRSAccess: true}, $set: {accessLevel: 1}});
 	},
 	rejectRSAccess: function(user) {
-		//HMT rejects RS access
-		var rejectId = Meteor.users.update(user._id, {$unset: {requestRSAccess: true}});
-		return rejectId;
+		Meteor.users.update(user._id, {$unset: {requestRSAccess: true}});
+	},
+	revokeRSAccess: function(user) {
+		if (user._id === this.userId) return false; //Cannot revoke own access
+		Meteor.users.update(user._id, {$unset: {accessLevel: 1}});
+		return true;
 	}
 });

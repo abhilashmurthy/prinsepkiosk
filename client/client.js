@@ -19,16 +19,7 @@ Template.page.hasRequestedAccess = function() {
 
 Template.page.events = {
 	'click #requestRSBtn': function(e) {
-		Meteor.call('requestRSAccess', function(err, data){
-			if (err) console.log(err);
-			Session.set('requestId', data);
-		});
-		setTimeout(
-			function(){
-				if (Session.get('requestId')) {
-					$('#requestRSBtn').attr('disabled', 'disabled');
-				}
-			}, 500);
+		Meteor.call('requestRSAccess');
 	}
 }
 
@@ -39,14 +30,17 @@ Template.users.users = function() {
 
 Template.users.events = {
 	'click .approveBtn': function(e) {
-		Meteor.call('grantRSAccess', this, function(err, data){
-			if (err) console.log(err);
-		});
+		Meteor.call('grantRSAccess', this);
 	},
 	'click .rejectBtn': function(e) {
-		Meteor.call('rejectRSAccess', this, function(err, data){
+		Meteor.call('rejectRSAccess', this);
+	},
+	'click .revokeBtn': function(e) {
+		Meteor.call('revokeRSAccess', this, function(err, response){
 			if (err) console.log(err);
+			Session.set('revokable', response);
 		});
+		setTimeout(function(){if (!Session.get('revokable')) notify('Cannot', 'Cannot revoke own access');}, 500);
 	}
 }
 
@@ -63,7 +57,8 @@ Template.items.events = {
 	'click .createItemBtn': function(e) {
 		bootbox.confirm({
 			message: Spark.render(Template.additem),
-			title: "Add Item",
+			title: "<h2>Add Item</h2>",
+			className: "itemModal",
 			callback: function(confirm) {
 				if (!confirm) return;
 				var item = $('#addform').serializeObject();
@@ -98,7 +93,7 @@ Template.items.events = {
 			if (err) console.log(err);
 			Session.set('giveable', response);
 		});
-		setTimeout(function(){if (!Session.get('giveable')) notify('Cannot', 'You give the item to yourself, genius');}, 500);
+		setTimeout(function(){if (!Session.get('giveable')) notify('Cannot', 'You cannot give the item to yourself, genius');}, 500);
 	},
 	'click .rejectBtn': function(e) {
 		var itemId = $(e.currentTarget).closest('tr').attr('id');
