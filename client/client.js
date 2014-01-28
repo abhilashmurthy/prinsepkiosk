@@ -23,6 +23,10 @@ Template.page.events = {
 	}
 }
 
+$(document).ready(function(){
+	$('.login').text('Please Log In'); //Change cog to text only when DOM ready
+});
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////// USERS
 Template.users.users = function() {
 	return Meteor.users.find({});
