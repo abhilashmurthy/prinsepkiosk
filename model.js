@@ -60,6 +60,17 @@ Meteor.methods({
 			object: {item: item}
 		});
 	},
+	commentItem: function(item) {
+		Items.update(item._id, {$set: {comment: item.comment}});
+		
+		//Create story
+		Meteor.call('createStory', {
+			time: moment().format('MMM DD YY, h:mm a'),
+			subject: Meteor.user(),
+			action: 'Commented on an item',
+			object: {item: item}
+		});
+	},
 	decrItem: function(item) {
 		if (--item.count === 0) return false;
 		Items.update(item._id, {$inc: {count: -1}});

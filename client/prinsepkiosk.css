@@ -21,6 +21,20 @@
 	vertical-align: middle;
 }
 
+.abhitable tr, .abhitable td {
+	background-color: white !important;
+	vertical-align: middle;
+}
+
+.abhitable:not(#storyTable) td:not(.status), .abhitable:not(#storyTable) th:not(.status) {
+	text-align: center;
+}
+
+.highlight {
+	font-size: 16px;
+	font-weight: bold;
+}
+
 .header {
 	text-align: center;
 }

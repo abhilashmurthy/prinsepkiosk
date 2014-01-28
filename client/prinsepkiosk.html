@@ -50,14 +50,17 @@
 			{{#each items}}
 				<tr id="{{_id}}">
 					<td>
-						{{name}}
+						<span class="highlight">{{name}}</span>
 						{{#if isRS}}
-							<div><button title="Delete" class="deleteItemBtn actionBtn btn btn-danger btn-small"><i class="fa fa-trash-o fa-white"></i></button></div>
+							<div>
+								<button title="Comment" class="commentItemBtn actionBtn btn btn-info btn-small"><i class="fa fa-pencil fa-white"></i></button>
+								<button title="Delete" class="deleteItemBtn actionBtn btn btn-danger btn-small"><i class="fa fa-trash-o fa-white"></i></button>
+							</div>
 						{{/if}}
 					</td>
 					<td>{{description}}</td>
 					<td>
-						{{count}}
+						<span class="highlight">{{count}}</span>
 						{{#if isRS}}
 							<div>
 								<button title="Remove One" class="decrementItemBtn actionBtn btn btn-small"><i class="fa fa-minus text-info"></i></button>
@@ -65,9 +68,10 @@
 							</div>
 						{{/if}}
 					</td>
-					<td>
+					<td class="status">
 					{{#if available}}
-						<u style="color: green">Available</u>
+						<p style="color: green">Available</p>
+						<hr>
 						{{#each requests}}
 							<div class="request">
 								<i class="muted" style="text-align: center">Requested by </i>
@@ -87,7 +91,7 @@
 							</div>
 						{{/each}}
 					{{else}}
-						<u style="color:red">Unavailable</u>
+						<p style="color:red">Unavailable</p>
 					{{/if}}
 					{{#each borrowers}}
 						<div class="borrower">
@@ -135,8 +139,19 @@
 						<option value="event">Event</option>
 					</select>
 				</td></tr>
-				<tr><td>Description</td><td><input type="text" name="description"/></td></tr>
+				<tr><td>Description</td><td><textarea name="description"></textarea></td></tr>
 				<tr><td>Price</td><td><input type="text" name="price"/></td></tr>
+			</table>
+		</form>
+	</div>
+</template>
+
+<template name="commentitem">
+	<div class="commentitem">
+		<form id="commentform">
+			<table class="formtable">
+				<tr><td>Name</td><td class="itemname"></td></tr>
+				<tr><td>Comment</td><td><textarea class="comment" name="comment"/></textarea></td></tr>
 			</table>
 		</form>
 	</div>

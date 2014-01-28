@@ -51,6 +51,23 @@ Template.items.events = {
 	'click .deleteItemBtn': function(e) {
 		Meteor.call('deleteItem', this);
 	},
+	'click .commentItemBtn': function(e) {
+		var item = this;
+		bootbox.confirm({
+			message: Spark.render(Template.commentitem),
+			title: "<h2>Comment</h2>",
+			className: "itemModal",
+			callback: function(confirm) {
+				if (!confirm) return;
+				var update = $('#commentform').serializeObject();
+				Meteor.call('commentItem', _.extend(item, update));
+			}
+		});
+		setTimeout(function(){
+			$('.modal-body').find('.itemname').html('<b>' + item.name + '</b>');
+			$('.modal-body').find('.comment').val(item.comment).change();
+		}, 500);
+	},
 	'click .decrementItemBtn': function(e) {
 		Meteor.call('decrItem', this, function(err, response){
 			if (err) console.log(err);

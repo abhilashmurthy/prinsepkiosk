@@ -2,7 +2,8 @@
 	<h2>Stories</h2>
 	<div class="story">
 		<table id="storyTable" class="abhitable table table-bordered table-hover">
-			<tr><th>Time</th><th>Subject</th><th>Action</th><th>Object</th></tr>
+			<thead><tr><th>Time</th><th>Subject</th><th>Action</th><th>Object</th></tr></thead>
+			<tbody>
 			{{#each stories}}
 				<tr>
 					<td>{{time}}</td>
@@ -29,6 +30,7 @@
 					</td>
 				</tr>
 			{{/each}}
+			</tbody>
 		</table>
 	</div>
 </template>
