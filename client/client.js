@@ -1,7 +1,10 @@
-Meteor.subscribe("prinsepusers");
 Meteor.subscribe("items");
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////// NAVBAR
+Template.navbar.isHMT = function() {
+	return Meteor.user().accessLevel && Meteor.user().accessLevel === 2;
+}
+
 Template.navbar.events = {
 	'click .login-display-name': function(e) {
 		window.open(Meteor.user().services.facebook.link, '_blank');
@@ -20,31 +23,6 @@ Template.page.hasRequestedAccess = function() {
 Template.page.events = {
 	'click #requestRSBtn': function(e) {
 		Meteor.call('requestRSAccess');
-	}
-}
-
-$(document).ready(function(){
-	$('.login').text('Please Log In'); //Change cog to text only when DOM ready
-});
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////// USERS
-Template.users.users = function() {
-	return Meteor.users.find({});
-}
-
-Template.users.events = {
-	'click .approveBtn': function(e) {
-		Meteor.call('grantRSAccess', this);
-	},
-	'click .rejectBtn': function(e) {
-		Meteor.call('rejectRSAccess', this);
-	},
-	'click .revokeBtn': function(e) {
-		Meteor.call('revokeRSAccess', this, function(err, response){
-			if (err) console.log(err);
-			Session.set('revokable', response);
-		});
-		setTimeout(function(){if (!Session.get('revokable')) notify('Cannot', 'Cannot revoke own access');}, 500);
 	}
 }
 

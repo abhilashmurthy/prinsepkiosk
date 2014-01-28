@@ -2,6 +2,7 @@
   "packages": {
     "bootboxjs": {},
     "font-awesome": {},
-    "pnotify": {}
+    "pnotify": {},
+	"iron-router": {}
   }
 }

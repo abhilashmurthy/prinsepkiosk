@@ -40,23 +40,65 @@ Meteor.methods({
 		var storedItem = Items.findOne({name: item.name});
 		if (storedItem) Items.update(storedItem._id, {$inc: {count: 1}});
 		else Items.insert(item);
+		
+		//Create story
+		Meteor.call('createStory', {
+			time: Date.now(),
+			subject: Meteor.user(),
+			action: 'Added an item',
+			object: {item: item}
+		});
 	},
 	deleteItem: function(item) {
 		Items.remove(item._id);
+		
+		//Create story
+		Meteor.call('createStory', {
+			time: Date.now(),
+			subject: Meteor.user(),
+			action: 'Removed an item',
+			object: {item: item}
+		});
 	},
 	decrItem: function(item) {
 		if (--item.count === 0) return false;
 		Items.update(item._id, {$inc: {count: -1}});
+		
+		//Create story
+		Meteor.call('createStory', {
+			time: Date.now(),
+			subject: Meteor.user(),
+			action: 'Decreased an item',
+			object: {item: item}
+		});
+		
 		return true;
 	},
 	incrItem: function(item) {
 		Items.update(item._id, {$inc: {count: 1}, $set: {available: true}});
+		
+		//Create story
+		Meteor.call('createStory', {
+			time: Date.now(),
+			subject: Meteor.user(),
+			action: 'Increased an item',
+			object: {item: item}
+		});
 	},
 	borrowItem: function(item) {
 		var me = Meteor.users.findOne(this.userId);
 		if (_.findWhere(item.requests, {_id: me._id})) return false;
 		if (_.findWhere(item.borrowers, {_id: me._id})) return false;
 		Items.update(item._id, {$push: {requests: me}});
+		
+		//Create story
+		Meteor.call('createStory', {
+			time: Date.now(),
+			subject: me,
+			action: 'Requested an item',
+			object: {item: item}
+		});
+		
 		return true;
 	},
 	giveItem: function(request) {
@@ -69,10 +111,27 @@ Meteor.methods({
 				$set: {available: --request.item.count === 0 ? false : true} //New count + number of borrowers = available
 			}
 		);
+		
+		//Create story
+		Meteor.call('createStory', {
+			time: Date.now(),
+			subject: Meteor.user(),
+			action: 'Gave an item to',
+			object: {user: request.user, item: request.item}
+		});
+		
 		return true;
 	},
 	rejectItem: function(request) {
 		Items.update(request.item._id, {$pull: {requests: request.user}});
+		
+		//Create story
+		Meteor.call('createStory', {
+			time: Date.now(),
+			subject: Meteor.user(),
+			action: 'Rejected an item to',
+			object: {user: request.user, item: request.item}
+		});
 	},
 	collectItem: function(collect) {
 		Items.update(collect.item._id, 
@@ -82,6 +141,25 @@ Meteor.methods({
 				$set: {available: true} //Change availability of item
 			}
 		);
+		
+		//Create story
+		Meteor.call('createStory', {
+			time: Date.now(),
+			subject: Meteor.user(),
+			action: 'Collected an item from',
+			object: {user: collect.user, item: collect.item}
+		});
+	}
+});
+
+/******************/
+/*    STORIES     */
+/******************/
+Stories = new Meteor.Collection('stories');
+Meteor.methods({
+	createStory: function(story) {
+		//{time: Date, subject: user, action: string, object: user/item}
+		Stories.insert(story);
 	}
 });
 

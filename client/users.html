@@ -1,0 +1,24 @@
+<template name="users">
+	<h2>Users</h2>
+	<div class="users">
+		<table id="userTable" class="abhitable table table-bordered table-hover">
+			<tr><th>Name</th><th>Access Level</th><th>RS Access</th></tr>
+			{{#each users}}
+				<tr>
+					<td><a href="{{services.facebook.link}}">{{services.facebook.name}}</a></td>
+					<td>{{accessLevel}}</td>
+					<td>
+						{{#if requestRSAccess}}
+							<button class="approveBtn btn btn-success">Grant</button>
+							<button class="rejectBtn btn btn-danger">Reject</button>
+						{{else}}
+							{{#if accessLevel}}
+								<button class="revokeBtn btn" style="color: red">Revoke</button>
+							{{/if}}
+						{{/if}}
+					</td>
+				</tr>
+			{{/each}}
+		</table>
+	</div>
+</template>

@@ -48,3 +48,12 @@
 .itemModal {
 	max-width: 350px;
 }
+
+.navLink {
+	color: white !important;
+	font-size: 18px;
+}
+
+.navLink:hover {
+	color: gray !important;
+}

@@ -8,6 +8,11 @@ Meteor.publish("items", function() {
 	return Items.find({});
 });
 
+//Publish all stories
+Meteor.publish("stories", function() {
+	return Stories.find({});
+});
+
 //Runs functions on startup
 Meteor.startup(function(){
 	provideHMTAccess();

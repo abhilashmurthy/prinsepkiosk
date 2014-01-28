@@ -1,25 +1,31 @@
 <head>
-	<title>Prinsep Kiosk Equipment Borrow</title>
+	<title>Prinsep Kiosk Room Management</title>
 </head>
 
-<body>
+<template name="layout">
 	{{> navbar}}
 	{{#if currentUser}} <!-- Checks if the user has logged in -->
 		<h1 class="header">Prinsep Kiosk Room</h1>
 		<div class="container">
-			{{> page}}
+			{{yield}}
 		</div>
 	{{else}}
 		<h1 class="header">Prinsep Kiosk Room</h1>
-		<h2 class="login header"><i class="fa fa-cog fa-spin"></i></h2>
+		<h2 class="login header">{{#if loggingIn}}<i class="fa fa-cog fa-spin"></i>{{else}}Please Log In{{/if}}</h2>
 	{{/if}}
-</body>
+</template>
 
 <template name="navbar">
 	<div class="navbar navbar-inverse">
 		<div class="container navbar-inner" role="navigation">
 			<div class="container">
-				<a class="brand" href="#">Prinsep Kiosk Room</a>
+				<a class="navLink brand" href="/">Prinsep Kiosk Room</a>
+				{{#if currentUser}}
+					<ul class="navbar-nav nav">
+						{{#if isHMT}}<li><a class="navLink" href="users">Users</a></li>{{/if}}
+						<li><a class="navLink" href="/stories">Stories</a></li>
+					</ul>
+				{{/if}}
 				{{loginButtons align="right"}}
 			</div>
 		</div>
@@ -30,35 +36,7 @@
 	{{#unless hasRequestedAccess}} <!-- Disable request button if already requested -->
 		<button id="requestRSBtn" class="pull-right btn btn-success">Request RS Access</button>
 	{{/unless}}
-	{{#if isHMT}} <!-- Show users only if user is HMT -->
-		{{> users}}
-	{{/if}}
 	{{> items}}
-</template>
-
-<template name="users">
-	<h2>Users</h2>
-	<div class="users">
-		<table id="userTable" class="abhitable table table-bordered table-hover">
-			<tr><th>Name</th><th>Access Level</th><th>RS Access</th></tr>
-			{{#each users}}
-				<tr>
-					<td><a href="{{services.facebook.link}}">{{services.facebook.name}}</a></td>
-					<td>{{accessLevel}}</td>
-					<td>
-						{{#if requestRSAccess}}
-							<button class="approveBtn btn btn-success">Grant</button>
-							<button class="rejectBtn btn btn-danger">Reject</button>
-						{{else}}
-							{{#if accessLevel}}
-								<button class="revokeBtn btn" style="color: red">Revoke</button>
-							{{/if}}
-						{{/if}}
-					</td>
-				</tr>
-			{{/each}}
-		</table>
-	</div>
 </template>
 
 <template name="items">
@@ -74,13 +52,19 @@
 					<td>
 						{{name}}
 						{{#if isRS}}
-							<button title="Delete" class="deleteItemBtn actionBtn pull-right btn btn-danger"><i class="fa fa-trash-o fa-white"></i></button>
-							<button title="Remove One" class="decrementItemBtn actionBtn pull-right btn btn-info"><i class="fa fa-minus fa-white"></i></button>
-							<button title="Add One" class="incrementItemBtn actionBtn pull-right btn btn-info"><i class="fa fa-plus fa-white"></i></button>
+							<div><button title="Delete" class="deleteItemBtn actionBtn btn btn-danger btn-small"><i class="fa fa-trash-o fa-white"></i></button></div>
 						{{/if}}
 					</td>
 					<td>{{description}}</td>
-					<td>{{count}}</td>
+					<td>
+						{{count}}
+						{{#if isRS}}
+							<div>
+								<button title="Remove One" class="decrementItemBtn actionBtn btn btn-small"><i class="fa fa-minus text-info"></i></button>
+								<button title="Add One" class="incrementItemBtn actionBtn btn btn-small"><i class="fa fa-plus text-info"></i></button>
+							</div>
+						{{/if}}
+					</td>
 					<td>
 					{{#if available}}
 						<u style="color: green">Available</u>
