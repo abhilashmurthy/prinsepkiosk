@@ -1,0 +1,27 @@
+URL:
+https://graph.facebook.com/632872283440978/accounts/test-users?installed=true&name=Ian&locale=en_US&permissions=read_stream&method=post&access_token=632872283440978|a355acbbd0307917a81b8ce28ae57a27
+
+Users:
+{
+id: "100007662518897",
+email: "ian_isjaslv_hostelmanage@tfbnw.net",
+access_token: "CAAIZCmAZBkh1IBAENWh5yY6KndgBFeu1gfWc3hq1FjV4eDmwbd2hQrpfPphKoGIv6pT3DZAuCZBeGSfSBG0rcpuIS6i9i3sCX8333kHFpVXWPt5zteMOtnDhH1J3Wc75nDxDYTgdazlYDWx9mHWAz71kSAItdQAPHhBBVgLZCeqQepT48K6hdWSQMbpbllzwZD",
+login_url: "https://www.facebook.com/platform/test_account_login.php?user_id=100007662518897&n=uweFbZkTt78WjlF",
+password: "1612646923"
+}
+
+{
+id: "100007694612565",
+email: "cindy_rfzlrem_rs@tfbnw.net",
+access_token: "CAAIZCmAZBkh1IBAF3Qgk9zNzeOkcJeUreYBEWWLzB0C11DO8NwHN3HNnmDQGBjRYlr6ZBvZAYYlYpO4js2V1geg2YPV91MUBLyk3UBEwkZAJnkX6R5HxLSQ8QvFo2tQfCZAiQBbECLQfSsIpBtR5BAunilgQk8ykMpUdcJV4sFwcDv9mc1jzmk9rupVvfo02oZD",
+login_url: "https://www.facebook.com/platform/test_account_login.php?user_id=100007694612565&n=iihbsilTO449OFI",
+password: "613193403"
+}
+
+{
+id: "100007729142206",
+email: "biraj_xdmyjeh_resident@tfbnw.net",
+access_token: "CAAIZCmAZBkh1IBAP3yY2GnpJ91QemrZBQ6LwPbkbBJ3gZAqEZAvCZCixUwuArEybCtHZBZB8U9L3HE50i1FJtzEAfZCltmPbUgfAxecC5LewK0YlojQ4QBQqG7SOlm9tmJEj9YFTkSZCdRV7pjZCZB5c18maTKhZAZBNcdNKahbVKa2UxkZB62ZBSb0P3TtM8WDAnvQnersZD",
+login_url: "https://www.facebook.com/platform/test_account_login.php?user_id=100007729142206&n=hVuBWqRfmUQzOi1",
+password: "1485664907"
+}
