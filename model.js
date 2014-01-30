@@ -12,6 +12,14 @@ ItemsFS.allow({
   remove: function(userId, file) { return false; }
 });
 
+if (Meteor.isServer) {
+	ItemsFS.fileHandlers({
+		default1: function(options) {
+			return { blob: options.blob, fileRecord: options.fileRecord };
+		}
+	});
+}
+
 // ItemsFS.filter({
     // allow: {
         // contentTypes: ['image/*']
@@ -51,9 +59,10 @@ Meteor.methods({
 		
 		//Check if item already exists
 		console.log('Inserting item: ' + JSON.stringify(item));
+		var itemId  = null;
 		var storedItem = Items.findOne({name: item.name});
-		if (storedItem) Items.update(storedItem._id, {$inc: {count: 1}});
-		else Items.insert(item);
+		if (storedItem) itemId = Items.update(storedItem._id, {$inc: {count: 1}});
+		else itemId = Items.insert(item);
 		
 		//Create story
 		Meteor.call('createStory', {
@@ -62,6 +71,8 @@ Meteor.methods({
 			action: 'Added an item',
 			object: {item: item}
 		});
+		
+		return itemId
 	},
 	deleteItem: function(item) {
 		Items.remove(item._id);

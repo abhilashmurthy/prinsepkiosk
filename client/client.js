@@ -45,9 +45,9 @@ Template.items.events = {
 			callback: function(confirm) {
 				if (!confirm) return;
 				var item = $('#addform').serializeObject();
-				var image = $('.fileUploader')[0].files;
+				var image = $('.fileUploader')[0].files[0];
 				var imageId = ItemsFS.storeFile(image);
-				item["image"] = ItemsFS.findOne(imageId);
+				item.imageId = imageId;
 				Meteor.call('createItem', item);
 			}
 		});
