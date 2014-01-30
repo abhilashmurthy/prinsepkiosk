@@ -5,6 +5,8 @@
     "pnotify": {},
 	"iron-router": {},
 	"datatables": {},
-	"moment": {}
+	"moment": {},
+	"collectionfs": {},
+	"cfs-public-folder": {}
   }
 }

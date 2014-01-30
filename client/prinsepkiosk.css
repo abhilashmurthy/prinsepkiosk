@@ -50,6 +50,10 @@
 	padding-bottom: 10px;
 }
 
+.buttonRow {
+	margin-top: 15px;
+}
+
 .borrowBtn {
 	margin-bottom: 20px;
 }

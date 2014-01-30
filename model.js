@@ -2,6 +2,21 @@
 /*      ITEMS     */
 /******************/
 Items = new Meteor.Collection('items');
+ItemsFS = new CollectionFS('items');
+
+ItemsFS.allow({
+  insert: function(userId, file) { return userId && file.owner === userId; },
+  update: function(userId, file, fields, modifier) {
+    return userId && file.owner === userId;
+  },
+  remove: function(userId, file) { return false; }
+});
+
+// ItemsFS.filter({
+    // allow: {
+        // contentTypes: ['image/*']
+    // }
+// });
 
 var NonEmptyString = Match.Where(function (x) {
   check(x, String);
@@ -16,15 +31,14 @@ var ConvertedNumber = Match.Where(function (x) {
 Meteor.methods({
 	createItem: function(item) {
 		//Check syntax of item
-		check(item, {
-			name: NonEmptyString,
-			type: String,
-			description: Match.Optional(String),
-			price: Match.Optional(ConvertedNumber)
-		});
+		// check(item, {
+			// name: NonEmptyString,
+			// type: String,
+			// location: NonEmptyString
+		// });
 		if (item.name.length > 100)
 		  throw new Meteor.Error(413, "Name too long");
-		if (item.description.length > 1000)
+		if (item.location.length > 1000)
 		  throw new Meteor.Error(413, "Description too long");
 		if (!Meteor.user())
 		  throw new Meteor.Error(403, "You must be logged in");

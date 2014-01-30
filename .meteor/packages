@@ -17,3 +17,5 @@ pnotify
 iron-router
 datatables
 moment
+collectionfs
+cfs-public-folder

@@ -46,23 +46,30 @@
 	{{/if}}
 	<div class="items">
 		<table id="itemTable" class="abhitable table table-bordered table-hover">
-			<tr><th>Name</th><th>Description</th><th>Available</th>{{#if isRS}}{{/if}}<th>Status</th><th>Borrow</th></tr>
+			<tr><th>Name</th>{{#if isRS}}<th>Location</th><th>Comment</th>{{/if}}<th>Available</th>{{#if isRS}}{{/if}}<th>Status</th><th>Borrow</th></tr>
 			{{#each items}}
 				<tr id="{{_id}}">
 					<td>
 						<span class="highlight">{{name}}</span>
 						{{#if isRS}}
-							<div>
-								<button title="Comment" class="commentItemBtn actionBtn btn btn-info btn-small"><i class="fa fa-pencil fa-white"></i></button>
+							<div class='buttonRow'>
 								<button title="Delete" class="deleteItemBtn actionBtn btn btn-danger btn-small"><i class="fa fa-trash-o fa-white"></i></button>
 							</div>
 						{{/if}}
 					</td>
-					<td>{{description}}</td>
+					{{#if isRS}}
+						<td><span class="highlight">{{location}}</span></td>
+						<td>
+							{{comment}}
+							<div class='buttonRow'>
+								<button title="Comment" class="commentItemBtn actionBtn btn btn-info btn-small"><i class="fa fa-pencil fa-white"></i></button>
+							</div>
+						</td>
+					{{/if}}
 					<td>
 						<span class="highlight">{{count}}</span>
 						{{#if isRS}}
-							<div>
+							<div class='buttonRow'>
 								<button title="Remove One" class="decrementItemBtn actionBtn btn btn-small"><i class="fa fa-minus text-info"></i></button>
 								<button title="Add One" class="incrementItemBtn actionBtn btn btn-small"><i class="fa fa-plus text-info"></i></button>
 							</div>
@@ -139,8 +146,8 @@
 						<option value="event">Event</option>
 					</select>
 				</td></tr>
-				<tr><td>Description</td><td><textarea name="description"></textarea></td></tr>
-				<tr><td>Price</td><td><input type="text" name="price"/></td></tr>
+				<tr><td>Location</td><td><input type="text" name="location"/></td></tr>
+				<tr><td>Image</td><td><input name="image" type="file" class="fileUploader"></td></tr>
 			</table>
 		</form>
 	</div>

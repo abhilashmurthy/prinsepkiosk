@@ -1,4 +1,5 @@
 Meteor.subscribe("items");
+Meteor.subscribe('itemsFiles');
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////// NAVBAR
 Template.navbar.isHMT = function() {
@@ -44,6 +45,9 @@ Template.items.events = {
 			callback: function(confirm) {
 				if (!confirm) return;
 				var item = $('#addform').serializeObject();
+				var image = $('.fileUploader')[0].files;
+				var imageId = ItemsFS.storeFile(image);
+				item["image"] = ItemsFS.findOne(imageId);
 				Meteor.call('createItem', item);
 			}
 		});
