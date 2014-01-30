@@ -6,6 +6,8 @@
 	"iron-router": {},
 	"datatables": {},
 	"moment": {},
-	"collectionFS": {}
+	"collectionFS": {},
+	"imagemagick": {},
+	"GraphicsMagick": {}
   }
 }
