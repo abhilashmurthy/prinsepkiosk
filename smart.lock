@@ -8,9 +8,7 @@
       "iron-router": {},
       "datatables": {},
       "moment": {},
-      "collectionFS": {},
-      "imagemagick": {},
-      "graphicsmagick": {}
+      "collectionFS": {}
     },
     "packages": {
       "bootboxjs": {
@@ -47,16 +45,6 @@
         "git": "https://github.com/raix/Meteor-CollectionFS.git",
         "tag": "v0.3.7",
         "commit": "34d9fb363472e44c6dba4a1473a9e106e107f5a9"
-      },
-      "imagemagick": {
-        "git": "https://github.com/sylvaingi/meteor-imagemagick.git",
-        "tag": "v0.1.2",
-        "commit": "d67bb926356d35cdff1a6d6c3c69750f3f54c059"
-      },
-      "graphicsmagick": {
-        "git": "https://github.com/ewindso/meteor-graphicsmagick.git",
-        "tag": "v1.12.2",
-        "commit": "795dcb78be6d2b493a547073f98c967e284248e0"
       },
       "bootstrap-3": {
         "git": "https://github.com/mangasocial/meteor-bootstrap-3.git",
