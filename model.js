@@ -22,42 +22,7 @@ if (Meteor.isServer) {
 	ItemsFS.fileHandlers({
 		default1: function(options) {
 			return { blob: options.blob, fileRecord: options.fileRecord };
-		},
-		size40x40: function(options) {
-			var destination = options.destination();
-			var features = Imagemagick.identify(destination.serverFilename);
-			console.log(features);
-			// Imagemagick.resize({
-				// srcData: options.blob,
-				// dstPath: destination.serverFilename, // Imagemagick will create the file for us.
-				// width: 40,
-				// height: 40
-			// });
-			// console.log('I am handling: ' + options.fileRecord.filename + ' to '. destination.serverFilename);
-			// return destination.fileData;
-			return { blob: options.blob, fileRecord: options.fileRecord };
-		},
-		// size100x100gm: function(options) {
-			// if (options.fileRecord.contentType != 'image/jpeg')
-				// return null; // jpeg files only  
-			// var destination = options.destination();
-			// var dest = destination.serverFilename;
-			// // Uses meteorite graphicsmagick
-			// gm(options.blob, dest).resize(40, 40).quality(90).write(dest, function(err) {
-				// if (err) {
-					// console.log('GraphicsMagick error ' + err);
-					// return false;
-					// // False will trigger rerun, could check options.sumFailes
-					// // if we only want to rerun 2 times (default limit is 3,
-					// // but sumFailes is reset at server idle + wait period)
-				// } else {
-					// console.log('Finished writing image.');
-					// return destination('jpg').fileData.url; // We only return the url for the file, no blob to save since we took care of it
-				// }
-			// });
-			// // I failed to deliver a url for this, but don't try again
-			// return null;
-		// },
+		}
 	});
 }
 

@@ -1,5 +1,9 @@
-.container, h1 {
+.container, .navcontainer, h1 {
 	padding: 0 30px 0 30px;
+}
+
+.container {
+	max-width: 1080px;
 }
 
 .login-buttons-dropdown-align-right {
@@ -36,6 +40,25 @@
 .highlight {
 	font-size: 18px;
 	font-weight: bold;
+}
+
+.abhimedia, .abhimedia-body {
+	display: inline;
+	overflow: visible;
+}
+
+.itempic {
+	max-width: 150px;
+	max-height: 150px;
+}
+
+.btn-xlarge {
+    padding: 18px 28px;
+    font-size: 22px; //change this to your desired size
+    line-height: normal;
+    -webkit-border-radius: 8px;
+       -moz-border-radius: 8px;
+            border-radius: 8px;
 }
 
 .header {

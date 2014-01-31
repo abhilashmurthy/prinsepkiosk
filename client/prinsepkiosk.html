@@ -5,8 +5,8 @@
 <template name="layout">
 	{{> navbar}}
 	{{#if currentUser}} <!-- Checks if the user has logged in -->
-		<h1 class="header">Prinsep Kiosk Room</h1>
 		<div class="container">
+			<h1 class="header">Prinsep Kiosk Room</h1>
 			{{yield}}
 		</div>
 	{{else}}
@@ -17,8 +17,8 @@
 
 <template name="navbar">
 	<div class="navbar navbar-inverse">
-		<div class="container navbar-inner" role="navigation">
-			<div class="container">
+		<div class="navcontainer navbar-inner" role="navigation">
+			<div class="navcontainer">
 				<a class="navLink brand" href="/">Prinsep Kiosk Room</a>
 				{{#if currentUser}}
 					<ul class="navbar-nav nav">
@@ -46,27 +46,31 @@
 	{{/if}}
 	<div class="items">
 		<table id="itemTable" class="abhitable table table-bordered table-hover">
-			<tr><th>Name</th>{{#if isRS}}<th>Location</th><th>Comment</th>{{/if}}<th>Available</th>{{#if isRS}}{{/if}}<th>Status</th><th>Borrow</th></tr>
+			<tr><th>Name</th><th>Available</th>{{#if isRS}}{{/if}}<th>Status</th><th>Borrow</th></tr>
 			{{#each items}}
 				<tr id="{{_id}}">
-					<td>
-						<span class="highlight">{{name}}</span>
+					<td class="status">
+						<!-- <img class="itempic" src=''/>
+						<span class="highlight">{{name}}</span> -->
+						<div class="abhimedia media">
+							<a class="pull-left" href="#">
+								<img class="itempic media-object" data-src="holder.js/200x200" src="{{cfsFileUrl 'default1' fileId=imageId collection='ItemsFS'}}">
+							</a>
+							<div class="abhimedia-body media-body">
+								<h4 class="media-heading">{{name}}</h4>
+								{{#if isRS}}
+									<b>Location:</b> {{location}}<br/>
+									<b>Comment:</b> {{#if comment}}{{comment}}{{else}} - {{/if}}
+								{{/if}}
+							</div>
+						</div>
 						{{#if isRS}}
-							<div class='buttonRow'>
-								<img src='{{cfsFileUrl "size40x40" fileId=imageId collection="ItemsFS"}}'/>
+							<div class="buttonRow">
 								<button title="Delete" class="deleteItemBtn actionBtn btn btn-danger btn-small"><i class="fa fa-trash-o fa-white"></i></button>
+								<button title="Comment" class="commentItemBtn actionBtn btn btn-info btn-small"><i class="fa fa-pencil fa-white"></i></button>
 							</div>
 						{{/if}}
 					</td>
-					{{#if isRS}}
-						<td><span class="highlight">{{location}}</span></td>
-						<td>
-							{{comment}}
-							<div class='buttonRow'>
-								<button title="Comment" class="commentItemBtn actionBtn btn btn-info btn-small"><i class="fa fa-pencil fa-white"></i></button>
-							</div>
-						</td>
-					{{/if}}
 					<td>
 						<span class="highlight">{{count}}</span>
 						{{#if isRS}}
@@ -120,7 +124,7 @@
 					{{/each}}
 					</td>
 					<td>
-						{{#if available}}<button class="{{#if available}}borrowBtn{{/if}} actionBtn btn btn-success btn-large">Borrow</button>{{/if}}
+						{{#if available}}<button class="{{#if available}}borrowBtn{{/if}} actionBtn btn btn-success btn-xlarge">Borrow</button>{{/if}}
 					</td>
 				</tr>
 			{{/each}}
