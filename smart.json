@@ -3,9 +3,11 @@
     "bootboxjs": {},
     "font-awesome": {},
     "pnotify": {},
-	"iron-router": {},
-	"datatables": {},
-	"moment": {},
-	"collectionFS": {}
+    "iron-router": {},
+    "datatables": {},
+    "moment": {},
+    "collectionFS": {},
+    "imagemagick": {},
+    "graphicsmagick": {}
   }
 }
