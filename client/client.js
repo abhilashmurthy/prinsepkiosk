@@ -46,6 +46,7 @@ Template.items.events = {
 				if (!confirm) return;
 				var item = $('#addform').serializeObject();
 				var image = $('.fileUploader')[0].files[0];
+				if (!image) notify("Cannot", "Please upload a picture of this item");
 				var imageId = ItemsFS.storeFile(image);
 				item.imageId = imageId;
 				Meteor.call('createItem', item);
