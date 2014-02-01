@@ -2,7 +2,10 @@ Meteor.subscribe("stories");
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////// STORIES
 Template.stories.stories = function() {
-	return Stories.find({$where: function(){return this.object.user !== undefined}});
+	if (Meteor.user().accessLevel && Meteor.user().accessLevel > 0) //If RS or HMT
+		return Stories.find();
+	else
+		return Stories.find({$where: function(){return this.object.user !== undefined && this.action.indexOf('Rejected') === -1}});
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////// PLUGINS

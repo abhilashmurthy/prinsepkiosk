@@ -20,6 +20,10 @@
 	color: grey;
 }
 
+#searchItems {
+	margin-top: 20px;
+}
+
 .abhitable {
 	margin-top: 20px;
 	vertical-align: middle;
@@ -45,6 +49,10 @@
 .abhimedia, .abhimedia-body {
 	display: inline;
 	overflow: visible;
+}
+
+.abhirow {
+	margin-left: 0 !important;
 }
 
 .itempic {

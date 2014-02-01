@@ -9,7 +9,7 @@ ItemsFS.allow({
   update: function(userId, file, fields, modifier) {
     return userId && file.owner === userId;
   },
-  remove: function(userId, file) { return false; }
+  remove: function(userId, file) { return userId && file.owner === userId; }
 });
 
 ItemsFS.filter({
@@ -39,11 +39,12 @@ var ConvertedNumber = Match.Where(function (x) {
 Meteor.methods({
 	createItem: function(item) {
 		//Check syntax of item
-		// check(item, {
-			// name: NonEmptyString,
-			// type: String,
-			// location: NonEmptyString
-		// });
+		check(item, {
+			name: NonEmptyString,
+			type: String,
+			location: NonEmptyString,
+			imageId: String
+		});
 		if (item.name.length > 100)
 		  throw new Meteor.Error(413, "Name too long");
 		if (item.location.length > 1000)
@@ -54,15 +55,16 @@ Meteor.methods({
 		//Default parameters
 		item.count = 1;
 		item.available = true;
-		item.requests = [];
+		item.requesters = [];
 		item.borrowers = [];
+		item.name = titleCase(item.name);
+		item.location = titleCase(item.location);
 		
 		//Check if item already exists
 		console.log('Inserting item: ' + JSON.stringify(item));
-		var itemId  = null;
 		var storedItem = Items.findOne({name: item.name});
-		if (storedItem) itemId = Items.update(storedItem._id, {$inc: {count: 1}});
-		else itemId = Items.insert(item);
+		if (storedItem) Items.update(storedItem._id, {$inc: {count: 1}});
+		else Items.insert(item);
 		
 		//Create story
 		Meteor.call('createStory', {
@@ -72,7 +74,7 @@ Meteor.methods({
 			object: {item: item}
 		});
 		
-		return itemId
+		return (storedItem === undefined || storedItem === null);
 	},
 	deleteItem: function(item) {
 		ItemsFS.remove(item.imageId);
@@ -124,9 +126,9 @@ Meteor.methods({
 	},
 	borrowItem: function(item) {
 		var me = Meteor.users.findOne(this.userId);
-		if (_.findWhere(item.requests, {_id: me._id})) return false;
+		if (_.findWhere(item.requesters, {_id: me._id})) return false;
 		if (_.findWhere(item.borrowers, {_id: me._id})) return false;
-		Items.update(item._id, {$push: {requests: me}});
+		Items.update(item._id, {$push: {requesters: me}});
 		
 		//Create story
 		Meteor.call('createStory', {
@@ -142,7 +144,7 @@ Meteor.methods({
 		if (request.user._id === this.userId) return false; //RS cannot give to self
 		Items.update(request.item._id, 
 			{
-				$pull: {requests: request.user}, //Remove user from requests
+				$pull: {requesters: request.user}, //Remove user from requesters
 				$push: {borrowers: request.user}, //Add user to borrowers
 				$inc: {count: -1}, //Decrement count
 				$set: {available: --request.item.count === 0 ? false : true} //New count + number of borrowers = available
@@ -160,7 +162,7 @@ Meteor.methods({
 		return true;
 	},
 	rejectItem: function(request) {
-		Items.update(request.item._id, {$pull: {requests: request.user}});
+		Items.update(request.item._id, {$pull: {requesters: request.user}});
 		
 		//Create story
 		Meteor.call('createStory', {
@@ -221,3 +223,12 @@ Meteor.methods({
 		return true;
 	}
 });
+
+function titleCase(name) {
+	var strs = name.split(' ');
+	var normalizedName = '';
+	for (var i = 0; i < strs.length; i++) {
+		normalizedName += strs[i].charAt(0).toUpperCase() + strs[i].slice(1) + ' ';
+	}
+	return normalizedName.trim();
+}

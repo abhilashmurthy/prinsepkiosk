@@ -41,9 +41,12 @@
 
 <template name="items">
 	<h2>Items</h2>
-	{{#if isRS}}
-		<button class="createItemBtn btn btn-success">New Item</button>
-	{{/if}}
+	<div class="abhirow row">
+		{{#if isRS}}
+			<button class="pull-left createItemBtn btn btn-success">New Item</button>
+		{{/if}}
+		<input type="text" id="searchItems" class="pull-right span2 search-query" placeholder="Search"/>
+	</div>
 	<div class="items">
 		<table id="itemTable" class="abhitable table table-bordered table-hover">
 			<tr><th>Name</th><th>Available</th>{{#if isRS}}{{/if}}<th>Status</th><th>Borrow</th></tr>
@@ -88,7 +91,7 @@
 					{{#if available}}
 						<p style="color: green">Available</p>
 						<hr>
-						{{#each requests}}
+						{{#each requesters}}
 							<div class="request">
 								<i class="muted" style="text-align: center">Requested by </i>
 								<div>
@@ -131,6 +134,8 @@
 						{{#if available}}<button class="{{#if available}}borrowBtn{{/if}} actionBtn btn btn-success btn-xlarge">Borrow</button>{{/if}}
 					</td>
 				</tr>
+			{{else}}
+				<tr><td colspan="4">No items found</td><tr>
 			{{/each}}
 		</table>
 	</div>

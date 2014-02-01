@@ -1,4 +1,8 @@
-Meteor.subscribe("items");
+Session.setDefault('itemQuery', '');
+Deps.autorun(function(){
+	var itemQuery = Session.get('itemQuery', itemQuery);
+	Meteor.subscribe('items', itemQuery);
+});
 Meteor.subscribe('itemsFiles');
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////// NAVBAR
@@ -49,7 +53,9 @@ Template.items.events = {
 				if (!image) notify("Cannot", "Please upload a picture of this item");
 				var imageId = ItemsFS.storeFile(image);
 				item.imageId = imageId;
-				Meteor.call('createItem', item);
+				Meteor.call('createItem', item, function(err, firstEntry){
+					if (!firstEntry) ItemsFS.remove(imageId); //Remove stored image if not first entry
+				});
 			}
 		});
 	},
@@ -108,6 +114,10 @@ Template.items.events = {
 		var itemId = $(e.currentTarget).closest('tr').attr('id');
 		var item = Items.findOne(itemId);
 		Meteor.call('collectItem', {item:item, user:this});
+	},
+	'keyup .search-query': function(e) {
+		var itemQuery = $(e.currentTarget).val();
+		Session.set('itemQuery', itemQuery);
 	}
 }
 
