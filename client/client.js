@@ -5,7 +5,7 @@ Deps.autorun(function(){
 });
 Meteor.subscribe('itemsFiles');
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////// NAVBAR
+//////////////////////////////////////////////////////////////////////////////////////////////////////////// DEFAULTS
 Template.navbar.isHMT = function() {
 	return Meteor.user().accessLevel && Meteor.user().accessLevel === 2;
 }
@@ -15,6 +15,23 @@ Template.navbar.events = {
 		window.open(Meteor.user().services.facebook.link, '_blank');
 	}
 }
+
+Template.user_loggedout.events({
+	'click #login': function(e) {
+		Meteor.loginWithFacebook(function(err){
+			if (err) console.log(err);
+			else console.log('Logged in!');
+		});
+	}
+});
+
+Template.user_loggedin.events({
+	'click #logout': function(e) {
+		Meteor.logout(function(err){
+			if (err) console.log(err);
+		});
+	}
+});
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////// PAGE
 Template.page.isHMT = function() {

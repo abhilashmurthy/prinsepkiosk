@@ -1,23 +1,37 @@
-.container, .navcontainer, h1 {
+.container, h1 {
 	padding: 0 30px 0 30px;
+}
+
+.navcontainer {
+	padding: 0 20px 0 20px;
 }
 
 .container {
 	max-width: 1080px;
 }
 
-.login-buttons-dropdown-align-right {
-	float: right;
-	margin-top: 5px;
+#prinseplogo {
+	max-height: 300px;
 }
 
-.login-display-name {
-	font-weight: bold;
-	color: white;
+#logintext {
+	margin-bottom: 7px;
+	font-size: 18px;
+	color: darkblue;
 }
 
-.login-display-name:hover{
-	color: grey;
+#fbconnectlogo {
+	max-height: 40px;
+	box-shadow: 5px 5px 5px #dddddd;
+	border-radius: 10;
+}
+
+.navbar-nav li:not(.brand) {
+	margin: 5px 0;
+}
+
+.navpic {
+	max-height: 30px;
 }
 
 #searchItems {

@@ -4,14 +4,17 @@
 
 <template name="layout">
 	{{> navbar}}
+	<h1 class="header">Prinsep Kiosk Room</h1>
 	{{#if currentUser}} <!-- Checks if the user has logged in -->
 		<div class="container">
-			<h1 class="header">Prinsep Kiosk Room</h1>
-			{{yield}}
+			{{#if loggingIn}}
+				<h2 class="login header"><i class="fa fa-cog fa-spin"></i></h2>
+			{{else}}
+				{{yield}}
+			{{/if}}
 		</div>
 	{{else}}
-		<h1 class="header">Prinsep Kiosk Room</h1>
-		<h2 class="login header">{{#if loggingIn}}<i class="fa fa-cog fa-spin"></i>{{else}}Please Log In{{/if}}</h2>
+		{{> user_loggedout}}
 	{{/if}}
 </template>
 
@@ -19,16 +22,39 @@
 	<div class="navbar navbar-inverse">
 		<div class="navcontainer navbar-inner" role="navigation">
 			<div class="navcontainer">
-				<a class="navLink brand" href="/">Prinsep Kiosk Room</a>
+				<a class="navLink brand" href="/"><img class="navpic" src="prinsep-nav.png"/></a>
 				{{#if currentUser}}
 					<ul class="navbar-nav nav">
 						{{#if isHMT}}<li><a class="navLink" href="users">Users</a></li>{{/if}}
 						<li><a class="navLink" href="/stories">Stories</a></li>
 					</ul>
+					{{> user_loggedin}}
 				{{/if}}
-				{{loginButtons align="right"}}
 			</div>
 		</div>
+	</div>
+</template>
+
+<template name="user_loggedin">
+	<ul class="navbar-nav nav pull-right">
+		<li class="brand"><img class="navpic img-rounded" src="http://graph.facebook.com/{{currentUser.services.facebook.id}}/picture"/></li>
+		<li class="dropdown">
+			<a href="#" class="navLink dropdown-toggle" data-toggle="dropdown">
+				{{currentUser.services.facebook.name}}
+				<b class="caret"></b>
+			</a>
+			<ul class="dropdown-menu">
+				<li><a id="logout">Logout</a></li>
+			</ul>
+		</li>
+	</ul>
+</template>
+
+<template name="user_loggedout">
+	<div class="header">
+		<img id="prinseplogo" src="/prinsep-logo.png"/>
+		<div id="logintext">Login with Facebook</div>
+		<div><a id="login"><img id="fbconnectlogo" src="/fb-connect.png"/></a></div>
 	</div>
 </template>
 
