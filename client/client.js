@@ -10,6 +10,10 @@ Template.navbar.isHMT = function() {
 	return Meteor.user().accessLevel && Meteor.user().accessLevel === 2;
 }
 
+Template.navbar.isRS = function() {
+	return Meteor.user().accessLevel && Meteor.user().accessLevel > 0;
+}
+
 Template.navbar.events = {
 	'click .login-display-name': function(e) {
 		window.open(Meteor.user().services.facebook.link, '_blank');

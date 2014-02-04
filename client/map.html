@@ -1,0 +1,24 @@
+<template name="map">
+	<h2>Map</h2>
+	{{#each divrows}}
+		<div class="maprow row-fluid">
+			{{#each this}}
+				<div class="span4">
+					<div class="thumbnail">
+						<img data-src="holder.js/300x200" alt="300x200" src="mapitems/{{location}}.jpg">
+						<div class="caption">
+							<h3>{{location}}</h3>
+							<div class="well">
+								<ul class="nav nav-list">
+									{{#each items}}
+										<li>{{name}}</li>
+									{{/each}}
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>	
+			{{/each}}
+		</div>
+	{{/each}}
+</template>

@@ -1,5 +1,6 @@
 <head>
-	<title>Prinsep Kiosk Room Management</title>
+	<title>Prinsep Kiosk Room</title>
+	<link rel="icon" sizes="16x16 32x32" href="/favicon.ico?v=2">
 </head>
 
 <template name="layout">
@@ -26,6 +27,7 @@
 				{{#if currentUser}}
 					<ul class="navbar-nav nav">
 						{{#if isHMT}}<li><a class="navLink" href="users">Users</a></li>{{/if}}
+						{{#if isRS}}<li><a class="navLink" href="/map">Map</a></li>{{/if}}
 						<li><a class="navLink" href="/stories">Stories</a></li>
 					</ul>
 					{{> user_loggedin}}

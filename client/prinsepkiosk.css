@@ -123,3 +123,7 @@
 .navLink:hover {
 	color: gray !important;
 }
+
+.maprow {
+	margin-bottom : 20px;
+}

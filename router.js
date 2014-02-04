@@ -12,4 +12,7 @@ Router.map(function() {
 	this.route('stories', {
 		path: '/stories'
 	});
+	this.route('map', {
+		path: '/map'
+	});
 });
