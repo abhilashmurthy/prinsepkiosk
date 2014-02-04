@@ -23,19 +23,14 @@ Template.map.events = {
 		Meteor.call('generateItemsCSV', function(err, csvId){
 			if (err) console.log(err);
 			console.log('Got fileId: ' + csvId);
-			Session.set('csvId', csvId);
-			bootbox.dialog({
-				message: Spark.render(Template.downloadCSV),
-				className: "itemModal"
+			CSVFS.retrieveBlob(csvId, function(fileItem){
+				var file = CSVFS.findOne(csvId);
+				if (fileItem.blob) saveAs(fileItem.blob, file.filename);
+				else if (fileItem.file) saveAs(fileItem.file, file.filename);
 			});
 		});
 	}
 };
-
-Template.downloadCSV.file = function(){
-	var csvId = Session.get('csvId');
-	return CSVFS.findOne(csvId);
-}
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////// PLUGINS
