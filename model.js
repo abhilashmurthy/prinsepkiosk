@@ -224,6 +224,73 @@ Meteor.methods({
 	}
 });
 
+/******************/
+/*      CSV     */
+/******************/
+CSVFS = new CollectionFS('csvs');
+
+CSVFS.allow({
+  insert: function(userId, file) { return userId && file.owner === userId; },
+  update: function(userId, file, fields, modifier) {
+    return userId && file.owner === userId;
+  },
+  remove: function(userId, file) { return true }
+});
+
+if (Meteor.isServer) {
+	CSVFS.fileHandlers({
+		default1: function(options) {
+			return { blob: options.blob, fileRecord: options.fileRecord };
+		}
+	});
+}
+
+Meteor.methods({
+	generateItemsCSV: function() {
+		var fileId = null;
+		if (Meteor.isServer) {
+			var items = Items.find().fetch();
+			var csvStr = JSON2CSV(items);
+			var buffer = Buffer(csvStr.length);
+			for (var i = 0; i < csvStr.length; i++) {
+				buffer[i] = csvStr.charCodeAt(i);
+			}
+			fileId = CSVFS.storeBuffer('prinsepkiosk_items.csv', buffer, {
+				contentType: 'text/plain',
+				owner: this.userId,
+				noProgress: true,
+				metadata: { author: Meteor.user().services.facebook.name },
+				encoding: 'utf-8'
+			});
+		}
+		return fileId;
+	}
+});
+
+/* Copied from jsFiddle */
+function JSON2CSV(objArray) {
+	var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+	var str = '';
+	var line = '';
+	var head = array[0];
+	for (var index in array[0]) {
+		var value = index + "";
+		line += '"' + value.replace(/"/g, '""') + '",';
+	}
+	line = line.slice(0, -1);
+	str += line + '\r\n';
+	for (var i = 0; i < array.length; i++) {
+		var line = '';
+		for (var index in array[i]) {
+			var value = array[i][index] + "";
+			line += '"' + value.replace(/"/g, '""') + '",';
+		}
+		line = line.slice(0, -1);
+		str += line + '\r\n';
+	}
+	return str;
+}
+
 function titleCase(name) {
 	var strs = name.split(' ');
 	var normalizedName = '';

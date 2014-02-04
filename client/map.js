@@ -1,4 +1,5 @@
 Meteor.subscribe('items', '');
+Meteor.subscribe('csvs');
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////// MAPS
 Template.map.divrows = function(){
@@ -15,6 +16,25 @@ Template.map.divrows = function(){
 	};
 	divrows.push(row);
 	return divrows;
+}
+
+Template.map.events = {
+	'click #downloadCSV': function(e) {
+		Meteor.call('generateItemsCSV', function(err, csvId){
+			if (err) console.log(err);
+			console.log('Got fileId: ' + csvId);
+			Session.set('csvId', csvId);
+			bootbox.dialog({
+				message: Spark.render(Template.downloadCSV),
+				className: "itemModal"
+			});
+		});
+	}
+};
+
+Template.downloadCSV.file = function(){
+	var csvId = Session.get('csvId');
+	return CSVFS.findOne(csvId);
 }
 
 

@@ -1,5 +1,6 @@
 <template name="map">
-	<h2>Map</h2>
+	<h2 class="pull-left">Map</h2>
+	<button id="downloadCSV" class="btn btn-primary pull-right">Download Data</button>
 	{{#each divrows}}
 		<div class="maprow row-fluid">
 			{{#each this}}
@@ -21,4 +22,11 @@
 			{{/each}}
 		</div>
 	{{/each}}
+</template>
+
+<template name="downloadCSV">
+	<h4>Your download is ready</h4>
+	{{#with file}}
+		{{cfsDownloadButton "CSVFS" class="btn btn-primary btn-large" content=filename}}
+	{{/with}}
 </template>

@@ -29,6 +29,11 @@ Meteor.publish("stories", function() {
 	return Stories.find();
 });
 
+//Publish all CSVs
+Meteor.publish("csvs", function() {
+	return CSVFS.find();
+});
+
 function titleCase(name) {
 	var strs = name.split(' ');
 	var normalizedName = '';
