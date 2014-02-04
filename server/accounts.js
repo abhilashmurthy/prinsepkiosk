@@ -4,8 +4,8 @@ Accounts.loginServiceConfiguration.remove({
 
 Accounts.loginServiceConfiguration.insert({
 	service: "facebook",
-	appId: "632872283440978",
-	secret: "a355acbbd0307917a81b8ce28ae57a27"
+	appId: Meteor.settings.fbdev.appId,
+	secret: Meteor.settings.fbdev.secret
 });
 
 Accounts.onCreateUser(function(options, user){

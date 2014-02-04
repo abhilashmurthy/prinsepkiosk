@@ -138,6 +138,25 @@ Template.items.events = {
 	}
 }
 
+Handlebars.registerHelper('itemThumbnail', function(imageId, opts){
+	return getThumbnail(imageId, opts);
+});
+
+function getThumbnail(imageId, opts) {
+	var displayBase = 'http://i.embed.ly/1/display/fill';
+	var embedlyImageKey = Meteor.settings.public.embedly.key;
+	var hash = opts && opts.hash ? opts.hash : {};
+	var cfsUrl = document.URL.substring(0, document.URL.length - 1) + ItemsFS.findOne(imageId).fileHandler[hash.fileHandler].url;
+	var params = {
+		key: embedlyImageKey,
+		url: cfsUrl,
+		width: 150,
+		height: 150
+	};
+	// return a string of the embedly display url for our properly resized image
+	return displayBase + '?' + $.param(params)
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////// PLUGINS
 //Pnotify settings
 $.pnotify.defaults.history = false;
