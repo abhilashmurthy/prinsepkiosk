@@ -86,7 +86,7 @@
 								<div style="margin-bottom: 20px">Uploading Image: {{cfsQueueProgressBar 'ItemsFS' fileId=imageId}}</div>
 							{{else}}
 								<a class="pull-left" href="#">
-									<img class="itempic media-object" data-src="holder.js/200x200" src="{{itemThumbnail imageId fileHandler='default1'}}">
+									<img class="itempic media-object" data-src="holder.js/200x200" src="{{cfsFileUrl 'default1' fileId=imageId collection='ItemsFS'}}">
 								</a>
 							{{/if}}
 							<div class="abhimedia-body media-body">
