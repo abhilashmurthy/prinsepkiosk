@@ -1,0 +1,17 @@
+{
+	"fbprod": {
+		"name": "prinsepkiosk",
+		"appId": "535023476593957",
+		"secret": "fcfb5711b19dd93c89e7a46e855ab392"
+	},
+	"fb": {
+		"name": "prinsepkiosk-dev",
+		"appId": "632872283440978",
+		"secret": "a355acbbd0307917a81b8ce28ae57a27"
+	},
+	"public": {
+		"embedly": {
+			"key": "fc57fc86841d49909b126955a5c67a61"
+		}
+	}
+}
