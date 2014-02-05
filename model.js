@@ -66,10 +66,8 @@ Meteor.methods({
 		if (storedItem) Items.update(storedItem._id, {$inc: {count: 1}});
 		else Items.insert(item);
 		
-		//Create story
-		Meteor.call('createStory', {
-			time: moment().format('MMM DD YY, h:mm a'),
-			subject: Meteor.user(),
+		//Create log
+		Meteor.call('writeLog', {
 			action: 'Added an item',
 			object: {item: item}
 		});
@@ -80,47 +78,23 @@ Meteor.methods({
 		ItemsFS.remove(item.imageId);
 		Items.remove(item._id);
 		
-		//Create story
-		Meteor.call('createStory', {
-			time: moment().format('MMM DD YY, h:mm a'),
-			subject: Meteor.user(),
+		//Create log
+		Meteor.call('writeLog', {
 			action: 'Removed an item',
 			object: {item: item}
 		});
 	},
-	commentItem: function(item) {
-		Items.update(item._id, {$set: {comment: item.comment}});
+	changeItem: function(item) {
+		//Check syntax of item
+		//TODO
 		
-		//Create story
-		Meteor.call('createStory', {
-			time: moment().format('MMM DD YY, h:mm a'),
-			subject: Meteor.user(),
-			action: 'Commented on an item',
-			object: {item: item}
-		});
-	},
-	decrItem: function(item) {
-		if (--item.count === 0) return false;
-		Items.update(item._id, {$inc: {count: -1}});
+		var itemId = item._id;
+		delete item._id;
+		Items.update(itemId, {$set: item});
 		
-		//Create story
-		Meteor.call('createStory', {
-			time: moment().format('MMM DD YY, h:mm a'),
-			subject: Meteor.user(),
-			action: 'Decreased an item',
-			object: {item: item}
-		});
-		
-		return true;
-	},
-	incrItem: function(item) {
-		Items.update(item._id, {$inc: {count: 1}, $set: {available: true}});
-		
-		//Create story
-		Meteor.call('createStory', {
-			time: moment().format('MMM DD YY, h:mm a'),
-			subject: Meteor.user(),
-			action: 'Increased an item',
+		//Create log
+		Meteor.call('writeLog', {
+			action: 'Changed an item',
 			object: {item: item}
 		});
 	},
@@ -130,9 +104,8 @@ Meteor.methods({
 		if (_.findWhere(item.borrowers, {_id: me._id})) return false;
 		Items.update(item._id, {$push: {requesters: me}});
 		
-		//Create story
-		Meteor.call('createStory', {
-			time: moment().format('MMM DD YY, h:mm a'),
+		//Create log
+		Meteor.call('writeLog', {
 			subject: me,
 			action: 'Requested an item',
 			object: {item: item}
@@ -151,10 +124,8 @@ Meteor.methods({
 			}
 		);
 		
-		//Create story
-		Meteor.call('createStory', {
-			time: moment().format('MMM DD YY, h:mm a'),
-			subject: Meteor.user(),
+		//Create log
+		Meteor.call('writeLog', {
 			action: 'Gave an item to',
 			object: {user: request.user, item: request.item}
 		});
@@ -164,10 +135,8 @@ Meteor.methods({
 	rejectItem: function(request) {
 		Items.update(request.item._id, {$pull: {requesters: request.user}});
 		
-		//Create story
-		Meteor.call('createStory', {
-			time: moment().format('MMM DD YY, h:mm a'),
-			subject: Meteor.user(),
+		//Create log
+		Meteor.call('writeLog', {
 			action: 'Rejected an item to',
 			object: {user: request.user, item: request.item}
 		});
@@ -181,10 +150,8 @@ Meteor.methods({
 			}
 		);
 		
-		//Create story
-		Meteor.call('createStory', {
-			time: moment().format('MMM DD YY, h:mm a'),
-			subject: Meteor.user(),
+		//Create log
+		Meteor.call('writeLog', {
 			action: 'Collected an item from',
 			object: {user: collect.user, item: collect.item}
 		});
@@ -194,11 +161,15 @@ Meteor.methods({
 /******************/
 /*    STORIES     */
 /******************/
-Stories = new Meteor.Collection('stories');
+Logs = new Meteor.Collection('logs');
 Meteor.methods({
-	createStory: function(story) {
-		//{time: Date, subject: user, action: string, object: user/item}
-		Stories.insert(story);
+	writeLog: function(log) {
+		var defaults = {
+			subject: Meteor.user(),
+			time: moment().format('MMM DD YY, h:mm a')
+		};
+
+		Logs.insert(_.extend(defaults, log));
 	}
 });
 
@@ -247,6 +218,7 @@ if (Meteor.isServer) {
 
 Meteor.methods({
 	generateItemsCSV: function() {
+		CSVFS.remove(); //Remove all older csv files
 		var fileId = null;
 		if (Meteor.isServer) {
 			var items = Items.find().fetch();
@@ -255,7 +227,7 @@ Meteor.methods({
 			for (var i = 0; i < csvStr.length; i++) {
 				buffer[i] = csvStr.charCodeAt(i);
 			}
-			fileId = CSVFS.storeBuffer('prinsepkiosk_items.csv', buffer, {
+			fileId = CSVFS.storeBuffer('prinsepkiosk_items_' + (moment().format('YYMMDD_hhmm')) + '.csv', buffer, {
 				contentType: 'text/plain',
 				owner: this.userId,
 				noProgress: true,

@@ -13,11 +13,10 @@ Template.users.events = {
 		Meteor.call('rejectRSAccess', this);
 	},
 	'click .revokeBtn': function(e) {
-		Meteor.call('revokeRSAccess', this, function(err, response){
+		Meteor.call('revokeRSAccess', this, function(err, revokable){
 			if (err) console.log(err);
-			Session.set('revokable', response);
+			if (!revokable) notify('Cannot', 'Cannot revoke own access');
 		});
-		setTimeout(function(){if (!Session.get('revokable')) notify('Cannot', 'Cannot revoke own access');}, 500);
 	}
 }
 

@@ -28,7 +28,7 @@
 					<ul class="navbar-nav nav">
 						{{#if isHMT}}<li><a class="navLink" href="users">Users</a></li>{{/if}}
 						{{#if isRS}}<li><a class="navLink" href="/map">Map</a></li>{{/if}}
-						<li><a class="navLink" href="/stories">Stories</a></li>
+						<li><a class="navLink" href="/logs">Logs</a></li>
 					</ul>
 					{{> user_loggedin}}
 				{{/if}}
@@ -102,19 +102,11 @@
 						{{#if isRS}}
 							<div class="buttonRow">
 								<button title="Delete" class="deleteItemBtn actionBtn btn btn-danger btn-small"><i class="fa fa-trash-o fa-white"></i></button>
-								<button title="Comment" class="commentItemBtn actionBtn btn btn-info btn-small"><i class="fa fa-pencil fa-white"></i></button>
+								<button title="Change" class="changeItemBtn actionBtn btn btn-info btn-small"><i class="fa fa-pencil fa-white"></i></button>
 							</div>
 						{{/if}}
 					</td>
-					<td>
-						<span class="highlight">{{count}}</span>
-						{{#if isRS}}
-							<div class='buttonRow'>
-								<button title="Remove One" class="decrementItemBtn actionBtn btn btn-small"><i class="fa fa-minus text-info"></i></button>
-								<button title="Add One" class="incrementItemBtn actionBtn btn btn-small"><i class="fa fa-plus text-info"></i></button>
-							</div>
-						{{/if}}
-					</td>
+					<td><span class="highlight">{{count}}</span></td>
 					<td class="status">
 					{{#if available}}
 						<p style="color: green">Available</p>
@@ -195,12 +187,26 @@
 	</div>
 </template>
 
-<template name="commentitem">
-	<div class="commentitem">
-		<form id="commentform">
+<template name="changeitem">
+	<div class="changeitem">
+		<form id="changeform">
 			<table class="formtable">
-				<tr><td>Name</td><td class="itemname"></td></tr>
-				<tr><td>Comment</td><td><textarea class="comment" name="comment"/></textarea></td></tr>
+				{{#with item}}
+					<tr><td>Name</td><td class="itemname">{{name}}</td></tr>
+					<tr><td>Comment</td><td><textarea class="comment" name="comment">{{comment}}</textarea></td></tr>
+					<tr><td>Type</td><td>
+						<select class="type" name="type">
+							<option value="electronic">Electronic</option>
+							<option value="sport">Sport</option>
+							<option value="board">Board</option>
+							<option value="event">Event</option>
+						</select>
+					</td></tr>
+					<tr><td>Location</td><td><input type="text" name="location" value="{{location}}"/></td></tr>
+					<tr><td>Available</td><td><input type="text" name="count" value="{{count}}"/></td></tr>
+					<tr><td>Current Image</td><td><img class="itempic media-object" data-src="holder.js/200x200" src="{{cfsFileUrl 'default1' fileId=imageId collection='ItemsFS'}}"></td></tr>
+					<tr><td>Change Image</td><td><input name="image" type="file" class="fileUploader"></td></tr>
+				{{/with}}
 			</table>
 		</form>
 	</div>

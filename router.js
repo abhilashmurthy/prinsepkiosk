@@ -9,8 +9,8 @@ Router.map(function() {
 	this.route('users', {
 		path: '/users'
 	});
-	this.route('stories', {
-		path: '/stories'
+	this.route('logs', {
+		path: '/logs'
 	});
 	this.route('map', {
 		path: '/map'

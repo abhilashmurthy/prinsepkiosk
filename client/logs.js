@@ -1,16 +1,16 @@
-Meteor.subscribe("stories");
+Meteor.subscribe("logs");
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////// STORIES
-Template.stories.stories = function() {
+Template.logs.logs = function() {
 	if (Meteor.user().accessLevel && Meteor.user().accessLevel > 0) //If RS or HMT
-		return Stories.find();
+		return Logs.find();
 	else
-		return Stories.find({$where: function(){return this.object.user !== undefined && this.action.indexOf('Rejected') === -1}});
+		return Logs.find({$where: function(){return this.object.user !== undefined && this.action.indexOf('Rejected') === -1}});
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////// PLUGINS
 //Pnotify settings
-$.pnotify.defaults.history = false;
+$.pnotify.defaults.hilog = false;
 $.pnotify.defaults.delay = 3000;
 function notify(title, message) {
 	$.pnotify({
@@ -31,8 +31,8 @@ function notify(title, message) {
 	});
 }
 
-Template.stories.rendered = function() {
-	$('#storyTable').dataTable({
+Template.logs.rendered = function() {
+	$('#logTable').dataTable({
 		"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
 		"sPaginationType": "bootstrap",
 		"oLanguage": {

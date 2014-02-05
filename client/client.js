@@ -83,48 +83,43 @@ Template.items.events = {
 	'click .deleteItemBtn': function(e) {
 		Meteor.call('deleteItem', this);
 	},
-	'click .commentItemBtn': function(e) {
+	'click .changeItemBtn': function(e) {
 		var item = this;
+		Session.set('changeItemId', item._id);
 		bootbox.confirm({
-			message: Spark.render(Template.commentitem),
-			title: "<h2>Comment</h2>",
+			message: Spark.render(Template.changeitem),
+			title: "<h2>Change</h2>",
 			className: "itemModal",
 			callback: function(confirm) {
 				if (!confirm) return;
-				var update = $('#commentform').serializeObject();
-				Meteor.call('commentItem', _.extend(item, update));
+				var update = $('#changeform').serializeObject();
+				var image = $('.fileUploader')[0].files[0];
+				if (image) {
+					ItemsFS.remove(item.imageId); //Remove old image
+					var imageId = ItemsFS.storeFile(image);
+					update.imageId = imageId;
+				}
+				console.log(_.extend(item, update));
+				Meteor.call('changeItem', _.extend(item, update));
 			}
 		});
 		setTimeout(function(){
-			$('.modal-body').find('.itemname').html('<b>' + item.name + '</b>');
-			$('.modal-body').find('.comment').val(item.comment).change();
+			$('.modal-body').find('.type').val(item.type).change(); //Handlebars cannot change so changing here
 		}, 500);
 	},
-	'click .decrementItemBtn': function(e) {
-		Meteor.call('decrItem', this, function(err, response){
-			if (err) console.log(err);
-			Session.set('decrementable', response);
-		});
-		setTimeout(function(){if (!Session.get('decrementable')) notify('Cannot', 'Cannot have 0 items');}, 500);
-	},
-	'click .incrementItemBtn': function(e) {
-		Meteor.call('incrItem', this);
-	},
 	'click .borrowBtn': function(e) {
-		Meteor.call('borrowItem', this, function(err, response){
+		Meteor.call('borrowItem', this, function(err, borrowable){
 			if (err) console.log(err);
-			Session.set('borrowable', response);
+			if (!borrowable) notify('Cannot', 'You cannot borrow the same thing twice');
 		});
-		setTimeout(function(){if (!Session.get('borrowable')) notify('Cannot', 'You cannot borrow the same thing twice');}, 500);
 	},
 	'click .giveBtn': function(e) {
 		var itemId = $(e.currentTarget).closest('tr').attr('id');
 		var item = Items.findOne(itemId);
-		Meteor.call('giveItem', {item:item, user:this}, function(err, response){
+		Meteor.call('giveItem', {item:item, user:this}, function(err, giveable){
 			if (err) console.log(err);
-			Session.set('giveable', response);
+			if (!giveable) notify('Cannot', 'You cannot give the item to yourself, genius')
 		});
-		setTimeout(function(){if (!Session.get('giveable')) notify('Cannot', 'You cannot give the item to yourself, genius');}, 500);
 	},
 	'click .rejectBtn': function(e) {
 		var itemId = $(e.currentTarget).closest('tr').attr('id');
@@ -140,6 +135,11 @@ Template.items.events = {
 		var itemQuery = $(e.currentTarget).val();
 		Session.set('itemQuery', itemQuery);
 	}
+}
+
+Template.changeitem.item = function(){
+	var itemId = Session.get('changeItemId');
+	return Items.findOne(itemId);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////// PLUGINS

@@ -25,8 +25,8 @@ Meteor.publish('itemsFiles', function() {
 });
 
 //Publish all stories
-Meteor.publish("stories", function() {
-	return Stories.find();
+Meteor.publish("logs", function() {
+	return Logs.find();
 });
 
 //Publish all CSVs
