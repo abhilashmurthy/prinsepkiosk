@@ -8,11 +8,7 @@
 	<h1 class="header">Prinsep Kiosk Room</h1>
 	{{#if currentUser}} <!-- Checks if the user has logged in -->
 		<div class="container">
-			{{#if loggingIn}}
-				<h2 class="login header"><i class="fa fa-cog fa-spin"></i></h2>
-			{{else}}
-				{{yield}}
-			{{/if}}
+			{{yield}}
 		</div>
 	{{else}}
 		{{> user_loggedout}}
@@ -56,7 +52,12 @@
 	<div class="header">
 		<img id="prinseplogo" src="/prinsep-logo.png"/>
 		<div id="logintext">Login with Facebook</div>
-		<div><a id="login"><img id="fbconnectlogo" src="/fb-connect.png"/></a></div>
+		{{#if loggingIn}}
+			<h2 class="login header"><i class="fa fa-cog fa-spin"></i></h2>
+		{{else}}
+			<div><a id="login"><img id="fbconnectlogo" src="/fb-connect.png"/></a></div>
+			<div><h2 class="login2 header" hidden><i class="fa fa-cog fa-spin"></i></h2></div>
+		{{/if}}
 	</div>
 </template>
 

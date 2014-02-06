@@ -22,6 +22,7 @@ Template.navbar.events = {
 
 Template.user_loggedout.events({
 	'click #login': function(e) {
+		$('.login2').show();
 		Meteor.loginWithFacebook(function(err){
 			if (err) console.log(err);
 			else console.log('Logged in!');
