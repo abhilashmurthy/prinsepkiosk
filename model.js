@@ -5,11 +5,11 @@ Items = new Meteor.Collection('items');
 ItemsFS = new CollectionFS('items');
 
 ItemsFS.allow({
-  insert: function(userId, file) { return userId && file.owner === userId; },
+  insert: function(userId, file) { return true; },
   update: function(userId, file, fields, modifier) {
-    return userId && file.owner === userId;
+    return true;
   },
-  remove: function(userId, file) { return userId && file.owner === userId; }
+  remove: function(userId, file) { return true; }
 });
 
 ItemsFS.filter({
@@ -53,7 +53,7 @@ Meteor.methods({
 		  throw new Meteor.Error(403, "You must be logged in");
 		
 		//Default parameters
-		item.count = 1;
+		item.count = item.count? parseInt(item.count): 1;
 		item.available = true;
 		item.requesters = [];
 		item.borrowers = [];
@@ -87,6 +87,7 @@ Meteor.methods({
 	changeItem: function(item) {
 		//Check syntax of item
 		//TODO
+		item.count = parseInt(item.count);
 		
 		var itemId = item._id;
 		delete item._id;
@@ -115,7 +116,7 @@ Meteor.methods({
 	},
 	giveItem: function(request) {
 		if (request.user._id === this.userId) return false; //RS cannot give to self
-		Items.update(request.item._id, 
+		Items.update(request.item._id,
 			{
 				$pull: {requesters: request.user}, //Remove user from requesters
 				$push: {borrowers: request.user}, //Add user to borrowers

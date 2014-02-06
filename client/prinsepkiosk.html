@@ -85,13 +85,9 @@
 						<!-- <img class="itempic" src=''/>
 						<span class="highlight">{{name}}</span> -->
 						<div class="abhimedia media">
-							{{#if cfsIsUploading 'ItemsFS' fileId=imageId}}
-								<div style="margin-bottom: 20px">Uploading Image: {{cfsQueueProgressBar 'ItemsFS' fileId=imageId}}</div>
-							{{else}}
-								<a class="pull-left" href="#">
-									<img class="itempic media-object" data-src="holder.js/200x200" src="{{cfsFileUrl 'default1' fileId=imageId collection='ItemsFS'}}">
-								</a>
-							{{/if}}
+							<a class="pull-left" href="#">
+								<img class="itempic media-object" data-src="holder.js/200x200" src="{{cfsFileUrl 'default1' fileId=imageId collection='ItemsFS'}}">
+							</a>
 							<div class="abhimedia-body media-body">
 								<h4 class="media-heading">{{name}}</h4>
 								{{#if isRS}}
@@ -173,6 +169,7 @@
 						<input type="text" name="name"/>
 					</td>
 				</tr>
+				<tr><td>Available</td><td><input type="number" min="1" value="1" name="count"/></td></tr>
 				<tr><td>Type</td><td>
 					<select class="type" name="type">
 						<option value="Electronic">Electronic</option>
@@ -222,7 +219,7 @@
 							<option value="Floor Shelves">Floor Shelves</option>
 						</select>
 					</td></tr>
-					<tr><td>Available</td><td><input type="text" name="count" value="{{count}}"/></td></tr>
+					<tr><td>Available</td><td><input type="number" min="1" value="{{count}}" name="count"/></td></tr>
 					<tr><td>Current Image</td><td><img class="itempic media-object" data-src="holder.js/200x200" src="{{cfsFileUrl 'default1' fileId=imageId collection='ItemsFS'}}"></td></tr>
 					<tr><td>Change Image</td><td><input name="image" type="file" class="fileUploader"></td></tr>
 				{{/with}}
