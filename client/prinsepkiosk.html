@@ -173,14 +173,23 @@
 					</td>
 				</tr>
 				<tr><td>Type</td><td>
-					<select name="type">
-						<option value="electronic">Electronic</option>
-						<option value="sport">Sport</option>
-						<option value="board">Board</option>
-						<option value="event">Event</option>
+					<select class="type" name="type">
+						<option value="Electronic">Electronic</option>
+						<option value="Sport">Sport</option>
+						<option value="Board">Board</option>
+						<option value="Event">Event</option>
 					</select>
 				</td></tr>
-				<tr><td>Location</td><td><input type="text" name="location"/></td></tr>
+				<tr><td>Location</td><td>
+					<select class="type" name="location">
+						<option value="Racks">Racks</option>
+						<option value="Electronics Shelf">Electronics Shelf</option>
+						<option value="Games Shelf">Games Shelf</option>
+						<option value="Window Corner">Window Corner</option>
+						<option value="Plug Corner">Plug Corner</option>
+						<option value="Floor Shelves">Floor Shelves</option>
+					</select>
+				</td></tr>
 				<tr><td>Image</td><td><input name="image" type="file" class="fileUploader"></td></tr>
 			</table>
 		</form>
@@ -196,13 +205,22 @@
 					<tr><td>Comment</td><td><textarea class="comment" name="comment">{{comment}}</textarea></td></tr>
 					<tr><td>Type</td><td>
 						<select class="type" name="type">
-							<option value="electronic">Electronic</option>
-							<option value="sport">Sport</option>
-							<option value="board">Board</option>
-							<option value="event">Event</option>
+							<option value="Electronic">Electronic</option>
+							<option value="Sport">Sport</option>
+							<option value="Board">Board</option>
+							<option value="Event">Event</option>
 						</select>
 					</td></tr>
-					<tr><td>Location</td><td><input type="text" name="location" value="{{location}}"/></td></tr>
+					<tr><td>Location</td><td>
+						<select class="location" name="location">
+							<option value="Racks">Racks</option>
+							<option value="Electronics Shelf">Electronics Shelf</option>
+							<option value="Games Shelf">Games Shelf</option>
+							<option value="Window Corner">Window Corner</option>
+							<option value="Plug Corner">Plug Corner</option>
+							<option value="Floor Shelves">Floor Shelves</option>
+						</select>
+					</td></tr>
 					<tr><td>Available</td><td><input type="text" name="count" value="{{count}}"/></td></tr>
 					<tr><td>Current Image</td><td><img class="itempic media-object" data-src="holder.js/200x200" src="{{cfsFileUrl 'default1' fileId=imageId collection='ItemsFS'}}"></td></tr>
 					<tr><td>Change Image</td><td><input name="image" type="file" class="fileUploader"></td></tr>

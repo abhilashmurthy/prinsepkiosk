@@ -66,7 +66,6 @@ Template.items.events = {
 		bootbox.confirm({
 			message: Spark.render(Template.additem),
 			title: "<h2>Add Item</h2>",
-			className: "itemModal",
 			callback: function(confirm) {
 				if (!confirm) return;
 				var item = $('#addform').serializeObject();
@@ -89,7 +88,6 @@ Template.items.events = {
 		bootbox.confirm({
 			message: Spark.render(Template.changeitem),
 			title: "<h2>Change</h2>",
-			className: "itemModal",
 			callback: function(confirm) {
 				if (!confirm) return;
 				var update = $('#changeform').serializeObject();
@@ -105,6 +103,7 @@ Template.items.events = {
 		});
 		setTimeout(function(){
 			$('.modal-body').find('.type').val(item.type).change(); //Handlebars cannot change so changing here
+			$('.modal-body').find('.location').val(item.location).change(); //Handlebars cannot change so changing here
 		}, 500);
 	},
 	'click .borrowBtn': function(e) {
