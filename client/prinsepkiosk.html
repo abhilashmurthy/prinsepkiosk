@@ -51,10 +51,11 @@
 <template name="user_loggedout">
 	<div class="header">
 		<img id="prinseplogo" src="/prinsep-logo.png"/>
-		<div id="logintext">Login with Facebook</div>
 		{{#if loggingIn}}
+			<div id="logintext">Logging in...</div>
 			<h2 class="login header"><i class="fa fa-cog fa-spin"></i></h2>
 		{{else}}
+			<div id="logintext">Login with Facebook</div>
 			<div><a id="login"><img id="fbconnectlogo" src="/fb-connect.png"/></a></div>
 			<div><h2 class="login2 header" hidden><i class="fa fa-cog fa-spin"></i></h2></div>
 		{{/if}}
