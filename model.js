@@ -160,9 +160,10 @@ Meteor.methods({
 });
 
 /******************/
-/*    STORIES     */
+/*    LOGS        */
 /******************/
 Logs = new Meteor.Collection('logs');
+
 Meteor.methods({
 	writeLog: function(log) {
 		var defaults = {
@@ -171,6 +172,10 @@ Meteor.methods({
 		};
 
 		Logs.insert(_.extend(defaults, log));
+	},
+	removeLogs: function(specs) {
+		if (Meteor.user().accessLevel && Meteor.user().accessLevel > 1)
+			Logs.remove(specs);
 	}
 });
 
