@@ -1,12 +1,26 @@
 Meteor.subscribe("logs");
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////// STORIES
+/////////////////////////////////////////////////////////////////////////////////////////////////////////// LOGS
 Template.logs.logs = function() {
 	if (Meteor.user().accessLevel && Meteor.user().accessLevel > 0) //If RS or HMT
 		return Logs.find();
 	else
 		return Logs.find({$where: function(){return this.object.user !== undefined && this.action.indexOf('Rejected') === -1}});
 }
+
+Template.logs.events = {
+	'click #downloadCSV': function(e) {
+		Meteor.call('generateLogsCSV', function(err, csvId){
+			if (err) console.log(err);
+			console.log('Got fileId: ' + csvId);
+			CSVFS.retrieveBlob(csvId, function(fileItem){
+				var file = CSVFS.findOne(csvId);
+				if (fileItem.blob) saveAs(fileItem.blob, file.filename);
+				else if (fileItem.file) saveAs(fileItem.file, file.filename);
+			});
+		});
+	}
+};
 
 //////////////////////////////////////////////////////////////////////////////////////////////// PLUGINS
 //Pnotify settings

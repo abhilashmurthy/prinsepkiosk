@@ -223,7 +223,7 @@ Meteor.methods({
 		var fileId = null;
 		if (Meteor.isServer) {
 			var items = Items.find().fetch();
-			var csvStr = JSON2CSV(items);
+			var csvStr = ItemJSON2CSV(items);
 			var buffer = Buffer(csvStr.length);
 			for (var i = 0; i < csvStr.length; i++) {
 				buffer[i] = csvStr.charCodeAt(i);
@@ -237,23 +237,77 @@ Meteor.methods({
 			});
 		}
 		return fileId;
-	}
+	},
+	generateLogsCSV: function() {
+		CSVFS.remove(); //Remove all older csv files
+		var fileId = null;
+		if (Meteor.isServer) {
+			var logs = Logs.find().fetch();
+			var csvStr = LogJSON2CSV(logs);
+			var buffer = Buffer(csvStr.length);
+			for (var i = 0; i < csvStr.length; i++) {
+				buffer[i] = csvStr.charCodeAt(i);
+			}
+			fileId = CSVFS.storeBuffer('prinsepkiosk_log_' + (moment().format('YYMMDD_hhmm')) + '.csv', buffer, {
+				contentType: 'text/plain',
+				owner: this.userId,
+				noProgress: true,
+				metadata: { author: Meteor.user().services.facebook.name },
+				encoding: 'utf-8'
+			});
+		}
+		return fileId;
+	},
 });
 
-/* Copied from jsFiddle */
-function JSON2CSV(objArray) {
+/* Copied and modified from jsFiddle */
+function LogJSON2CSV(objArray) {
+	var fields = ['subject', 'time', 'action', 'object'];
 	var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
 	var str = '';
 	var line = '';
 	var head = array[0];
-	for (var index in array[0]) {
-		var value = index + "";
+	for (var index in fields) {
+		var value = fields[index] + "";
 		line += '"' + value.replace(/"/g, '""') + '",';
 	}
 	line = line.slice(0, -1);
 	str += line + '\r\n';
 	for (var i = 0; i < array.length; i++) {
 		var line = '';
+		array[i] = _.pick(array[i], fields);
+		for (var index in array[i]) {
+			//Custom code
+			var value = null;
+			if (typeof array[i][index] === 'object') {
+				if (array[i][index].services) value = array[i][index].services.facebook.name; //Is user
+				else if (array[i][index].item && array[i][index].user) value = array[i][index].item.name + " : " + array[i][index].user.services.facebook.name; //Item + User
+				else if (array[i][index].item) value = array[i][index].item.name;
+				else value = JSON.stringify(array[i][index]);
+			}
+			else value = array[i][index] + "";
+			line += '"' + value.replace(/"/g, '""') + '",';
+		}
+		line = line.slice(0, -1);
+		str += line + '\r\n';
+	}
+	return str;
+}
+
+function ItemJSON2CSV(objArray) {
+	var fields = ['name', 'type', 'location', 'count', 'comment'];
+	var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+	var str = '';
+	var line = '';
+	for (var index in fields) {
+		var value = fields[index] + "";
+		line += '"' + value.replace(/"/g, '""') + '",';
+	}
+	line = line.slice(0, -1);
+	str += line + '\r\n';
+	for (var i = 0; i < array.length; i++) {
+		var line = '';
+		array[i] = _.pick(array[i], fields);
 		for (var index in array[i]) {
 			var value = array[i][index] + "";
 			line += '"' + value.replace(/"/g, '""') + '",';
