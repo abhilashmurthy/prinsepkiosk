@@ -220,7 +220,7 @@
 						</select>
 					</td></tr>
 					<tr><td>Available</td><td><input type="number" min="1" value="{{count}}" name="count"/></td></tr>
-					<tr><td>Current Image</td><td><img class="itempic media-object" data-src="holder.js/200x200" src="{{cfsFileUrl 'default1' fileId=imageId collection='ItemsFS'}}"></td></tr>
+					<tr><td>Current Image</td><td><img class="itempic media-object" data-src="holder.js/200x200" src="/show-image/{{imageId}}"></td></tr>
 					<tr><td>Change Image</td><td><input name="image" type="file" class="fileUploader"></td></tr>
 				{{/with}}
 			</table>
