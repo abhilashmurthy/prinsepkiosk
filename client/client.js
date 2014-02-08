@@ -1,8 +1,4 @@
-Session.setDefault('itemQuery', '');
-Deps.autorun(function(){
-	var itemQuery = Session.get('itemQuery', itemQuery);
-	Meteor.subscribe('items', itemQuery);
-});
+Meteor.subscribe('items');
 Meteor.subscribe('itemsFiles');
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////// DEFAULTS
@@ -130,10 +126,6 @@ Template.items.events = {
 		var itemId = $(e.currentTarget).closest('tr').attr('id');
 		var item = Items.findOne(itemId);
 		Meteor.call('collectItem', {item:item, user:this});
-	},
-	'keyup .search-query': function(e) {
-		var itemQuery = $(e.currentTarget).val();
-		Session.set('itemQuery', itemQuery);
 	}
 }
 

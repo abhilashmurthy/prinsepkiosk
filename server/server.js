@@ -4,21 +4,8 @@ Meteor.publish("prinsepusers", function () {
 });
 
 //Publish all items
-Meteor.publish("items", function(itemQuery) {
-	if (this.userId && Meteor.users.findOne(this.userId).accessLevel && Meteor.users.findOne(this.userId).accessLevel > 0) //If RS or HMT
-		return Items.find({
-			$or: [
-				{name: {$regex: '.*' + titleCase(itemQuery) + '.*'}},
-				{location: {$regex: '.*' + titleCase(itemQuery) + '.*'}},
-				{comment: {$regex: '.*' + titleCase(itemQuery) + '.*'}}
-			]
-		});
-	else 
-		return Items.find({
-			$or: [
-				{name: {$regex: '.*' + titleCase(itemQuery) + '.*'}}
-			]
-		});
+Meteor.publish("items", function(){
+	return Items.find();
 });
 Meteor.publish('itemsFiles', function() {
     return ItemsFS.find();

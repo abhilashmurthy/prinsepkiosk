@@ -5,11 +5,11 @@ Items = new Meteor.Collection('items');
 ItemsFS = new CollectionFS('items');
 
 ItemsFS.allow({
-  insert: function(userId, file) { return true; },
+  insert: function(userId, file) { return userId && file.owner === userId; },
   update: function(userId, file, fields, modifier) {
-    return true;
+    return userId && file.owner === userId;
   },
-  remove: function(userId, file) { return true; }
+  remove: function(userId, file) { return false; }
 });
 
 ItemsFS.filter({

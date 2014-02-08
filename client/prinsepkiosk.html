@@ -71,10 +71,9 @@
 <template name="items">
 	<h2>Items</h2>
 	<div class="abhirow row">
-		{{#if isRS}}
-			<button class="pull-left createItemBtn btn btn-success">New Item</button>
-		{{/if}}
-		<input type="text" id="searchItems" class="pull-right span2 search-query" placeholder="Search"/>
+	{{#if isRS}}
+		<button class="pull-left createItemBtn btn btn-success">New Item</button>
+	{{/if}}
 	</div>
 	<div class="items">
 		<table id="itemTable" class="abhitable table table-bordered table-hover">
