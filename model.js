@@ -43,7 +43,8 @@ Meteor.methods({
 			name: NonEmptyString,
 			type: String,
 			location: NonEmptyString,
-			imageId: String
+			imageId: String,
+			count: ConvertedNumber
 		});
 		if (item.name.length > 100)
 		  throw new Meteor.Error(413, "Name too long");
@@ -53,7 +54,7 @@ Meteor.methods({
 		  throw new Meteor.Error(403, "You must be logged in");
 		
 		//Default parameters
-		item.count = item.count? parseInt(item.count): 1;
+		item.count = parseInt(item.count);
 		item.available = true;
 		item.requesters = [];
 		item.borrowers = [];
