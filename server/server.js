@@ -5,7 +5,7 @@ Meteor.publish("prinsepusers", function () {
 
 //Publish all items
 Meteor.publish("items", function(){
-	return Items.find();
+	return Items.find({}, {sort: {interactions: -1}});
 });
 Meteor.publish('itemsFiles', function() {
     return ItemsFS.find();

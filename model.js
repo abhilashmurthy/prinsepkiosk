@@ -104,7 +104,10 @@ Meteor.methods({
 		var me = Meteor.users.findOne(this.userId);
 		if (_.findWhere(item.requesters, {_id: me._id})) return false;
 		if (_.findWhere(item.borrowers, {_id: me._id})) return false;
-		Items.update(item._id, {$push: {requesters: me}});
+		Items.update(item._id, {
+			$push: {requesters: me},
+			$inc: {interactions: 1} 
+		});
 		
 		//Create log
 		Meteor.call('writeLog', {
@@ -135,7 +138,10 @@ Meteor.methods({
 		return true;
 	},
 	rejectItem: function(request) {
-		Items.update(request.item._id, {$pull: {requesters: request.user}});
+		Items.update(request.item._id, {
+			$pull: {requesters: request.user},
+			$inc: {interactions: -1}
+		});
 		
 		//Create log
 		Meteor.call('writeLog', {
@@ -147,7 +153,7 @@ Meteor.methods({
 		Items.update(collect.item._id, 
 			{
 				$pull: {borrowers: collect.user}, //Remove user from borrowers
-				$inc: {count: 1}, //Increment counnt
+				$inc: {count: 1, interactions: -1}, //Increment count and reduce interactions
 				$set: {available: true} //Change availability of item
 			}
 		);
