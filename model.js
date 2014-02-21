@@ -171,11 +171,34 @@ Meteor.methods({
 /******************/
 Logs = new Meteor.Collection('logs');
 
+//Add Asia/Singapore timezone
+if (Meteor.isClient) {
+	moment.tz.add({
+	    "zones": {
+	        "Asia/Singapore": [
+	            "6:55:25 - LMT 1901_0_1 6:55:25",
+	            "6:55:25 - SMT 1905_5_1 6:55:25",
+	            "7 - MALT 1933_0_1 7",
+	            "7:20 - MALST 1936_0_1 7:20",
+	            "7:20 - MALT 1941_8_1 7:20",
+	            "7:30 - MALT 1942_1_16 7:30",
+	            "9 - JST 1945_8_12 9",
+	            "7:30 - MALT 1965_7_9 7:30",
+	            "7:30 - SGT 1982_0_1 7:30",
+	            "8 - SGT"
+	        ]
+	    },
+	    "rules": {},
+	    "links": {}
+	});
+	moment().tz("Asia/Singapore").format();
+}
+
 Meteor.methods({
 	writeLog: function(log) {
 		var defaults = {
 			subject: Meteor.user(),
-			time: moment().tz('Asia/Singapore').format('MMM DD YY, h:mm a')
+			time: moment().format('MMM DD YY, h:mm a')
 		};
 
 		Logs.insert(_.extend(defaults, log));
