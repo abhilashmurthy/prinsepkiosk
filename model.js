@@ -240,7 +240,7 @@ Meteor.methods({
 			for (var i = 0; i < csvStr.length; i++) {
 				buffer[i] = csvStr.charCodeAt(i);
 			}
-			fileId = CSVFS.storeBuffer('prinsepkiosk_items_' + (moment().tzformat('YYMMDD_hhmm')) + '.csv', buffer, {
+			fileId = CSVFS.storeBuffer('prinsepkiosk_items_' + (moment().format('YYMMDD_hhmm')) + '.csv', buffer, {
 				contentType: 'text/plain',
 				owner: this.userId,
 				noProgress: true,
@@ -260,7 +260,7 @@ Meteor.methods({
 			for (var i = 0; i < csvStr.length; i++) {
 				buffer[i] = csvStr.charCodeAt(i);
 			}
-			fileId = CSVFS.storeBuffer('prinsepkiosk_log_' + (moment().tzformat('YYMMDD_hhmm')) + '.csv', buffer, {
+			fileId = CSVFS.storeBuffer('prinsepkiosk_log_' + (moment().format('YYMMDD_hhmm')) + '.csv', buffer, {
 				contentType: 'text/plain',
 				owner: this.userId,
 				noProgress: true,
