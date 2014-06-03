@@ -135,6 +135,23 @@ Template.changeitem.item = function(){
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////// PLUGINS
+//Popover
+Template.items.rendered = function () {
+	if (Template.items.isRS()) {
+		$('.iteminteracter').popover({
+			html: true,
+			container: "body",
+			trigger: "click",
+			content: function(e) {
+				if ($(this).hasClass('requester'))
+					return "<div><button title='Give' class='giveBtn actionBtn btn btn-success'>Give</button><button title='Reject' class='rejectBtn actionBtn btn btn-danger'>Reject</button></div>";
+				else
+					return "<div><button title='Collect' class='collectBtn actionBtn btn btn-primary'>Collect</button></div>";
+			}
+		});
+	}
+};
+
 //Pnotify settings
 $.pnotify.defaults.history = false;
 $.pnotify.defaults.delay = 3000;

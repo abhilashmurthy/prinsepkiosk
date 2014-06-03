@@ -77,6 +77,54 @@
 	{{/if}}
 	</div>
 	<div class="items">
+		{{#each items}}
+			<div class="itemthumbnail thumbnail">
+				<div class="abhimedia media">
+					<a class="pull-left" href="#">
+						<img class="itempic media-object" data-src="holder.js/200x200" src="/show-image/{{imageId}}">
+					</a>
+					<div class="abhimedia-body media-body">
+						<h4 class="media-heading">
+							{{name}}
+							<button title="Delete" class="deleteItemBtn actionBtn btn btn-danger btn-small"><i class="fa fa-trash-o fa-white"></i></button>
+							<button title="Change" class="changeItemBtn actionBtn btn btn-info btn-small"><i class="fa fa-pencil fa-white"></i></button>
+						</h4>
+						{{#if isRS}}
+							<b>Location:</b> {{location}}<br/>
+							<b>Comment:</b> {{#if comment}}{{comment}}{{else}} - {{/if}}<br/>
+						{{/if}}
+						{{#if available}}
+							<b style="color:green">{{count}} available</b>
+							<button class="borrowBtn actionBtn btn btn-success btn-medium">Borrow</button>
+						{{else}}
+							<b style="color:red">Unavailable</b>
+						{{/if}}
+					</div>
+				</div>
+				<div class="caption" style="clear:both">
+					{{#if requesters}}
+						<b>Requesters</b><br/>
+						{{#each requesters}}
+							<!-- <a href="{{this.services.facebook.link}}" target="_blank"> -->
+								<img class="iteminteracter requester" src="http://graph.facebook.com/{{this.services.facebook.id}}/picture" title="{{this.services.facebook.name}}"/>
+							<!-- </a> -->
+						{{/each}}
+					{{/if}}
+					{{#if borrowers}}
+						<br/><b>Borrowers</b><br/>
+						{{#each borrowers}}
+							<!-- <a href="{{this.services.facebook.link}}" target="_blank"> -->
+								<img class="iteminteracter borrower" src="http://graph.facebook.com/{{this.services.facebook.id}}/picture" title="{{this.services.facebook.name}}"/>
+							<!-- </a> -->
+						{{/each}}
+					{{/if}}
+				</div>
+			</div>
+		{{else}}
+			<h2>No items found</h2>
+		{{/each}}
+		<hr>
+		<hr>
 		<table id="itemTable" class="abhitable table table-bordered table-hover">
 			<tr><th>Name</th><th>Available</th>{{#if isRS}}{{/if}}<th>Status</th><th>Borrow</th></tr>
 			{{#each items}}
