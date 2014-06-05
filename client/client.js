@@ -109,23 +109,58 @@ Template.items.events = {
 			if (!borrowable) notify('Cannot', 'You cannot borrow the same thing twice');
 		});
 	},
-	'click .giveBtn': function(e) {
-		var itemId = $(e.currentTarget).closest('tr').attr('id');
+	'click .requester': function(e) {
+		if (!Template.items.isRS()) return false;
+		var requester = this;
+		var itemId = $(e.currentTarget).closest('.itemthumbnail').attr('id');
 		var item = Items.findOne(itemId);
-		Meteor.call('giveItem', {item:item, user:this}, function(err, giveable){
-			if (err) console.log(err);
-			if (!giveable) notify('Cannot', 'You cannot give the item to yourself, genius')
+		Session.set('requesterId', requester._id);
+		Session.set('requesterItemId', itemId);
+		bootbox.dialog({
+			message: Spark.render(Template.managerequest),
+			title: "<h2>Grant</h2>",
+			buttons: {
+				"Give": {
+					className: "btn-success",
+					callback: function() {
+						Meteor.call('giveItem', {item:item, user:requester}, function(err, giveable){
+							if (err) console.log(err);
+							if (!giveable) notify('Cannot', 'You cannot give the item to yourself, genius')
+						});
+					}
+				},
+				"Reject": {
+					className: "btn-danger",
+					callback: function() {
+						Meteor.call('rejectItem', {item:item, user:requester});
+					}
+				}
+			}
 		});
 	},
-	'click .rejectBtn': function(e) {
-		var itemId = $(e.currentTarget).closest('tr').attr('id');
+	'click .borrower': function(e) {
+		if (!Template.items.isRS()) return false;
+		var borrower = this;
+		var itemId = $(e.currentTarget).closest('.itemthumbnail').attr('id');
 		var item = Items.findOne(itemId);
-		Meteor.call('rejectItem', {item:item, user:this});
-	},
-	'click .collectBtn': function(e) {
-		var itemId = $(e.currentTarget).closest('tr').attr('id');
-		var item = Items.findOne(itemId);
-		Meteor.call('collectItem', {item:item, user:this});
+		Session.set('requesterId', borrower._id);
+		Session.set('requesterItemId', itemId);
+		bootbox.dialog({
+			message: Spark.render(Template.managerequest),
+			title: "<h2>Ask</h2>",
+			buttons: {
+				"Collect": {
+					className: "btn-primary",
+					callback: function() {
+						Meteor.call('collectItem', {item:item, user:borrower});
+					}
+				},
+				"Cancel": {
+					className: "btn-default",
+					callback: false
+				}
+			}
+		});
 	}
 }
 
@@ -134,24 +169,17 @@ Template.changeitem.item = function(){
 	return Items.findOne(itemId);
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////// PLUGINS
-//Popover
-Template.items.rendered = function () {
-	if (Template.items.isRS()) {
-		$('.iteminteracter').popover({
-			html: true,
-			container: "body",
-			trigger: "click",
-			content: function(e) {
-				if ($(this).hasClass('requester'))
-					return "<div><button title='Give' class='giveBtn actionBtn btn btn-success'>Give</button><button title='Reject' class='rejectBtn actionBtn btn btn-danger'>Reject</button></div>";
-				else
-					return "<div><button title='Collect' class='collectBtn actionBtn btn btn-primary'>Collect</button></div>";
-			}
-		});
-	}
-};
+Template.managerequest.requester = function(){
+	var requesterId = Session.get('requesterId');
+	return Meteor.users.findOne(requesterId);
+}
 
+Template.managerequest.item = function(){
+	var requesterItemId = Session.get('requesterItemId');
+	return Items.findOne(requesterItemId);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////// PLUGINS
 //Pnotify settings
 $.pnotify.defaults.history = false;
 $.pnotify.defaults.delay = 3000;

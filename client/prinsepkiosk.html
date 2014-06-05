@@ -70,15 +70,14 @@
 </template>
 
 <template name="items">
-	<h2>Items</h2>
-	<div class="abhirow row">
+	<div class="header abhirow row">
 	{{#if isRS}}
-		<button class="pull-left createItemBtn btn btn-success">New Item</button>
+		<button class="createItemBtn btn btn-success">New Item</button>
 	{{/if}}
 	</div>
 	<div class="items">
 		{{#each items}}
-			<div class="itemthumbnail thumbnail">
+			<div id="{{_id}}" class="itemthumbnail thumbnail">
 				<div class="abhimedia media">
 					<a class="pull-left" href="#">
 						<img class="itempic media-object" data-src="holder.js/200x200" src="/show-image/{{imageId}}">
@@ -123,9 +122,7 @@
 		{{else}}
 			<h2>No items found</h2>
 		{{/each}}
-		<hr>
-		<hr>
-		<table id="itemTable" class="abhitable table table-bordered table-hover">
+<!-- 		<table id="itemTable" class="abhitable table table-bordered table-hover">
 			<tr><th>Name</th><th>Available</th>{{#if isRS}}{{/if}}<th>Status</th><th>Borrow</th></tr>
 			{{#each items}}
 				<tr id="{{_id}}">
@@ -202,7 +199,7 @@
 			{{else}}
 				<tr><td colspan="4">No items found</td><tr>
 			{{/each}}
-		</table>
+		</table> -->
 	</div>
 </template>
 
@@ -273,5 +270,12 @@
 				{{/with}}
 			</table>
 		</form>
+	</div>
+</template>
+
+<template name="managerequest">
+	<div class="managerequest">
+		<h4><img class="interactbootboximg" src="http://graph.facebook.com/{{requester.services.facebook.id}}/picture?type=square"> {{requester.services.facebook.name}}</h4>
+		<h4><img class="interactbootboximg" src="/show-image/{{item.imageId}}"> {{item.name}}</h4>
 	</div>
 </template>
