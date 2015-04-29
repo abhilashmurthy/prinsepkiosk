@@ -1,6 +1,10 @@
 #Prinsep Kiosk Room
 A system to manage the SMU Prinsep Hostel's Kiosk Room Equipment.
 
+Preview:
+![alt tag](http://i.imgur.com/f3fwcsL.png)
+
+
 ##Usage
 You have to log in with your Facebook account
 Once you're in, you can:
